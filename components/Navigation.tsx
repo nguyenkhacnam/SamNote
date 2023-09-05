@@ -46,6 +46,7 @@ const Navigation: FC<NavigationProps> = ({ children }) => {
         [pathName]
     );
 
+
     return (
         <div className="md:flex w-full h-full px-[23px] py-[13px] md:px-[25px] md:py-[38px] bg-[#F7F7F7] md:bg-white">
             <div className="flex items-center justify-between fixed bottom-[13px] left-0 bg-[white] h-[68px] w-full px-[18px] py-[20px] rounded-[20px] md:sticky md:top-[38px] md:left-0 md:flex-col md:h-[calc(100vh-80px)] md:w-max md:bg-[#8AC3FC]">
