@@ -21,7 +21,7 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 <Providers>
-                    {pathName === "/login" ? (
+                    {pathName === "/login" || pathName === "/signup" ? (
                         children
                     ) : (
                         <Navigation>{children}</Navigation>
