@@ -1,9 +1,14 @@
+import NewNote from "@/components/NewNote/NewNote";
 import { FC } from "react";
 
-interface pageProps {}
+interface pageProps { }
 
-const page: FC<pageProps> = ({}) => {
-    return <div>add-note</div>;
+const page: FC<pageProps> = ({ }) => {
+  return (
+    <div>
+      <NewNote />
+    </div>
+  );
 };
 
 export default page;
