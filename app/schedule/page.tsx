@@ -96,7 +96,7 @@ export default function Schedule() {
     );
 
     return (
-        <div className="py-5 md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px] h-screen">
+        <div className="py-5 md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px] md:h-[calc(100vh-80px)] h-screen">
             <div className="flex items-center gap-3 pb-5 md:pb-8 lg:pb-10 xl:pb-15">
                 <IoIosArrowBack
                     onClick={() => router.back()}
