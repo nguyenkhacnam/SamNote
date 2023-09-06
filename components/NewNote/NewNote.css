@@ -1,0 +1,22 @@
+textarea::-webkit-scrollbar {
+  width: 5px;
+  height: 20px;
+  background-color: #aaa;
+}
+textarea::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0, 0.3);
+}
+
+.title {
+  @apply w-full min-h-[70px] p-4 resize-none outline-none max-h-[90px]
+}
+
+.content {
+  @apply w-full min-h-[240px]  p-4 resize-none outline-none max-h-[240px] mt-2
+
+}
+
+.icon-note {
+  @apply cursor-pointer 
+}
+
