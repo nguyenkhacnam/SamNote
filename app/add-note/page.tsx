@@ -1,4 +1,4 @@
-import NewNote from "@/components/NewNote";
+import NewNote from "@/components/NewNote/NewNote";
 import { FC } from "react";
 
 interface pageProps { }

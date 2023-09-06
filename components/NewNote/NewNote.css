@@ -1,0 +1,18 @@
+// custom css requill lib
+.container {
+  background-color: lightblue;
+  position: relative;
+
+}
+
+.container .ql-container.ql-snow {
+  border: none
+}
+
+.container .ql-toolbar.ql-snow {
+  position: absolute;
+  bottom: 66px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none
+}
