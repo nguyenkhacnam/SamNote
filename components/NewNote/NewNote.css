@@ -1,18 +1,22 @@
-// custom css requill lib
-.container {
-  background-color: lightblue;
-  position: relative;
+textarea::-webkit-scrollbar {
+  width: 5px;
+  height: 20px;
+  background-color: #aaa;
+}
+textarea::-webkit-scrollbar-thumb {
+  background: rgb(0, 0, 0, 0.3);
+}
+
+.title {
+  @apply w-full min-h-[70px] p-4 resize-none outline-none max-h-[90px]
+}
+
+.content {
+  @apply w-full min-h-[240px]  p-4 resize-none outline-none max-h-[240px] mt-2
 
 }
 
-.container .ql-container.ql-snow {
-  border: none
+.icon-note {
+  @apply cursor-pointer 
 }
 
-.container .ql-toolbar.ql-snow {
-  position: absolute;
-  bottom: 66px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: none
-}
