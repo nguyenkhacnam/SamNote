@@ -1,6 +1,8 @@
 import { FC } from "react";
 import { CiSearch } from "react-icons/ci";
 import { BsPlusLg } from "react-icons/bs";
+import Link from "next/link";
+import { useSelector } from "react-redux";
 
 interface HeaderProps {}
 
@@ -24,12 +26,16 @@ const Header: FC<HeaderProps> = ({}) => {
                 <div className="hidden md:flex p-3 bg-[#EFEFEF] w-max rounded-full">
                     <BsPlusLg className="text-[26px]  " />
                 </div>
-                <p className="md:py-[10px] px-[20px] py-[6px] md:px-[26px] lg:px-[46px] bg-[#D9D9D9] md:text-[16px] text-[13px] font-medium w-max rounded-[12px]">
-                    Login
-                </p>
-                <p className="md:py-[10px] px-[20px] py-[6px] md:px-[26px] lg:px-[46px] bg-[#D9D9D9] md:text-[16px] text-[13px] font-medium w-max rounded-[12px]">
-                    Sign up
-                </p>
+                <Link href="/login">
+                    <p className="md:py-[10px] px-[20px] py-[6px] md:px-[26px] lg:px-[46px] bg-[#D9D9D9] md:text-[16px] text-[13px] font-medium w-max rounded-[12px]">
+                        Login
+                    </p>
+                </Link>
+                <Link href="/signup">
+                    <p className="md:py-[10px] px-[20px] py-[6px] md:px-[26px] lg:px-[46px] bg-[#D9D9D9] md:text-[16px] text-[13px] font-medium w-max rounded-[12px]">
+                        Sign up
+                    </p>
+                </Link>
             </div>
         </div>
     );
