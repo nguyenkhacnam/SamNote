@@ -30,10 +30,10 @@ const NewNote = () => {
   const titleRef = useRef();
   const contentRef = useRef();
 
-  const setupAutoResize = (ref) => {
-    const handleKeyUp = (event) => {
+  const setupAutoResize = (ref: any) => {
+    const handleKeyUp = (event: any) => {
       ref.current.style.height = 'auto';
-      let scHeight = event.target.scrollHeight;
+      const scHeight = event.target.scrollHeight;
       ref.current.style.height = `${scHeight}px`;
     };
 
@@ -54,7 +54,7 @@ const NewNote = () => {
   }, []);
   const inputTitleRef = useRef(null);
   const inputContentRef = useRef(null);
-  const handleLabelClick = (ref) => {
+  const handleLabelClick = (ref: any) => {
     ref.current?.focus();
   };
 
