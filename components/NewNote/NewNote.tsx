@@ -11,15 +11,87 @@ import { BsListUl, BsShare, BsArrowDownSquare, BsPin } from 'react-icons/bs'
 import { PiImageSquare } from 'react-icons/pi'
 import { MdPublic } from 'react-icons/md'
 import { SlOptions } from 'react-icons/sl'
+import axios from 'axios'
+import { useSelector } from 'react-redux'
 
+interface RootState {
+  user: {
+    id: number;
+    name: string;
+  } | null;
+  color: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  }
+}
 
 const NewNote = () => {
   const colors: string[] = ['#FEF5CB', '#E0FCDB', '#FFDDED', '#E1CAFA', '#D8ECFF', '#E8E8E8', '#696969']
+  const initialColor = {
+    r: 254,
+    g: 245,
+    b: 203,
+    a: 1,
+  }
+  const titleRef = useRef();
+  const contentRef = useRef();
+  const inputTitleRef = useRef(null);
+  const inputContentRef = useRef(null);
+
   const [currentColor, setCurrentColor] = useState('#FEF5CB')
   const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
+  const [valueTitle, setValueTitle] = useState('')
+  const [valueContents, setValueContents] = useState('')
+  const [color, setColor] = useState<RootState['color']>(initialColor)
+  const [idFolder, setIdFolder] = useState(0)
+  const [dueAt, setDueAt] = useState(null)
+  const [remindAt, setRemindAt] = useState(null)
+  const [lock, setLock] = useState(null)
+  const [notePublic, setNotePublic] = useState(0)
+  const [pinned, setPinned] = useState(false)
+  const [share, setShare] = useState(null)
+  const [type, setType] = useState('text')
+
+  // console.log('datasaldkfj', valueTitle, color, idFolder, remindAt)
+  const userData: RootState['user'] = useSelector((state: RootState) => state.user)
+  const userId: number | undefined = userData?.id
+  // console.log('user', userData)
+  // console.log('user', userData?.id)
+
+  const hexToRgba = (hex: string, alpha: number = 1): RootState['color'] | null => {
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, (m, r, g, b) => {
+      return r + r + g + g + b + b;
+    });
+
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (result) {
+      const r = parseInt(result[1], 16);
+      const g = parseInt(result[2], 16);
+      const b = parseInt(result[3], 16);
+      return {
+        r,
+        g,
+        b,
+        a: alpha,
+      };
+    }
+
+    return null;
+  }
 
   const handleColorClick = (clickedColor: string) => {
+    // console.log('color da chon', clickedColor)
     setCurrentColor(clickedColor);
+    const rgbaColor = hexToRgba(clickedColor);
+    if (rgbaColor) {
+      // console.log('color hex', rgbaColor)
+      setColor(rgbaColor);
+    } else {
+      console.error('Invalid HEX color:', clickedColor);
+    }
     if (clickedColor === '#696969') {
       setTitleTextColor('text-white');
     } else {
@@ -27,13 +99,11 @@ const NewNote = () => {
     }
   };
 
-  const titleRef = useRef();
-  const contentRef = useRef();
 
-  const setupAutoResize = (ref) => {
-    const handleKeyUp = (event) => {
+  const setupAutoResize = (ref: any) => {
+    const handleKeyUp = (event: any) => {
       ref.current.style.height = 'auto';
-      let scHeight = event.target.scrollHeight;
+      const scHeight = event.target.scrollHeight;
       ref.current.style.height = `${scHeight}px`;
     };
 
@@ -48,14 +118,50 @@ const NewNote = () => {
     };
   };
 
+  const handleLabelClick = (ref: any) => {
+    ref.current?.focus();
+  };
+
   useEffect(() => {
     setupAutoResize(titleRef);
     setupAutoResize(contentRef);
   }, []);
-  const inputTitleRef = useRef(null);
-  const inputContentRef = useRef(null);
-  const handleLabelClick = (ref) => {
-    ref.current?.focus();
+
+  const handleTitleChange = (event: any) => {
+    console.log('title', event.target.value)
+    setValueTitle(event.target.value);
+  };
+
+  const handleContentsChange = (event: any) => {
+    console.log('contents', event.target.value)
+    setValueContents(event.target.value);
+  };
+
+  const createNewNote = async () => {
+    try {
+      const requestBody = {
+        color,
+        data: valueContents,
+        idFolder,
+        dueAt,
+        remindAt,
+        lock,
+        notePublic,
+        pinned,
+        share,
+        title: valueTitle,
+        type,
+      };
+
+      const response = await axios.post(`https://14.225.7.221:18011/notes/${userId}`, requestBody);
+      console.log('New note created:', response.data);
+    } catch (error) {
+      console.error('Error creating new note:', error);
+    }
+  };
+
+  const handleClickBtn = () => {
+    createNewNote();
   };
 
   return (
@@ -90,6 +196,7 @@ const NewNote = () => {
                 title text-xl'
                 style={{ backgroundColor: currentColor }}
                 ref={titleRef}
+                onChange={handleTitleChange}
               >
               </textarea>
             </div>
@@ -97,7 +204,7 @@ const NewNote = () => {
           </div>
           <div className=' xl:flex xl:flex-col
           flex flex-col'>
-          <label
+            <label
               htmlFor="inputContentField"
               className={`text-2xl font-semibold cursor-pointer ${titleTextColor}`}
               onClick={() => handleLabelClick(inputContentRef)}
@@ -111,6 +218,7 @@ const NewNote = () => {
                 content text-xl'
                 style={{ backgroundColor: currentColor }}
                 ref={contentRef}
+                onChange={handleContentsChange}
               >
               </textarea>
             </div>
@@ -145,7 +253,9 @@ const NewNote = () => {
             <SlOptions className={`icon-note ${titleTextColor}`} />
           </div>
           <div>
-            <button className=' xl:w-[114px] xl:h-[50px] xl:bg-[#FFFFFF] xl:text-[24px] xl:font-semibold xl:rounded-[30px]
+            <button
+              onClick={handleClickBtn}
+              className=' xl:w-[114px] xl:h-[50px] xl:bg-[#FFFFFF] xl:text-[24px] xl:font-semibold xl:rounded-[30px]
             w-[114px] h-[50px] bg-[#FFFFFF] text-[24px] font-semibold rounded-[30px]'>Done</button>
           </div>
         </div>
