@@ -16,11 +16,10 @@ import jwt_decode from "jwt-decode";
 import { validateEmail, validatePassword } from "../login/page";
 import * as message from "../../components/Message/Message";
 import { useRouter } from "next/navigation";
-const page = () => {
+const Signup = () => {
     const router = useRouter();
     const onFinish = async (values: any) => {
         console.log("Success:", values);
-
 
         try {
             const response = await axios.post(
@@ -81,7 +80,12 @@ const page = () => {
                 >
                     <Form.Item
                         name="name"
-                        rules={[{ required: true, message: "Please input your username!" }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your username!",
+                            },
+                        ]}
                     >
                         <Input
                             placeholder="Input name"
@@ -102,9 +106,17 @@ const page = () => {
                     </Form.Item>
                     <Form.Item
                         name="user_name"
-                        rules={[{ required: true, message: "Please input your username!" }]}
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your username!",
+                            },
+                        ]}
                     >
-                        <Input placeholder="Input user name" prefix={<AiOutlineUser />} />
+                        <Input
+                            placeholder="Input user name"
+                            prefix={<AiOutlineUser />}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -155,4 +167,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Signup;
