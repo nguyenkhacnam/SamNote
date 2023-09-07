@@ -9,27 +9,31 @@ import { PiLockKeyLight } from "react-icons/pi";
 import Image from "next/image";
 import logo from "../../assets/images/6306501 1.png";
 import xinh from "../../assets/images/xinh1.jpg";
+import Link from "next/link";
 import "./acount.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-
-const SignUp = () => {
-    const [showPassword, setShowPassword] = useState(false);
-
-
+import { validateEmail, validatePassword } from "../login/page";
+import * as message from "../../components/Message/Message";
+import { useRouter } from "next/navigation";
+const page = () => {
+    const router = useRouter();
     const onFinish = async (values: any) => {
         console.log("Success:", values);
-        try {
-            const response = await axios.post("http://14.225.7.179:18011/register");
 
-            // Check if the response status is OK (2xx) before accessing data
-            if (response.status === 200) {
-                console.log(response.data); // Access response data here
-            } else {
-                console.log("Request failed with status:", response.status);
-            }
-        } catch (error) {
-            console.log(error);
+
+        try {
+            const response = await axios.post(
+                "https://14.225.7.221:18011/register",
+                values
+            );
+            console.log(response.data);
+            message.success(response?.data?.message);
+            router.push("/login");
+        } catch (error: any) {
+            console.log("error", error);
+
+            message.error(error?.response?.data?.message);
         }
     };
 
@@ -41,9 +45,18 @@ const SignUp = () => {
         console.log(`checked = ${e.target.checked}`);
     };
 
+    const handleLoginWithSocial = (credentialResponse: any) => {
+        const data = credentialResponse.credential;
+        var decoded = jwt_decode(data);
+
+        console.log("decoded", data);
+    };
+    // const login = useGoogleLogin({
+    //     onSuccess: (tokenResponse) => console.log(tokenResponse),
+    // });
 
     return (
-        <div className="flex items-center justify-center px-[15px] w-[100vw] h-[100vh] ">
+        <div className="flex items-center justify-center px-[15px] pt-[40px] w-full h-full ">
             <div className="w-full">
                 <div>
                     <IoIosArrowBack />
@@ -66,7 +79,10 @@ const SignUp = () => {
                     autoComplete="off"
                     className=""
                 >
-                    <Form.Item name="name">
+                    <Form.Item
+                        name="name"
+                        rules={[{ required: true, message: "Please input your username!" }]}
+                    >
                         <Input
                             placeholder="Input name"
                             prefix={<AiOutlineUser />}
@@ -74,26 +90,34 @@ const SignUp = () => {
                         />
                     </Form.Item>
 
-                    <Form.Item name="email">
-                        <Input
-                            placeholder="Input Email"
-                            prefix={<GoMail />}
-                            className="bg-[#EBEBEB] p-2"
-                        />
+                    <Form.Item
+                        name="gmail"
+                        rules={[
+                            {
+                                validator: validateEmail,
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Input Email" prefix={<GoMail />} />
                     </Form.Item>
-                    <Form.Item name="user_name">
-                        <Input
-                            placeholder="Input user name"
-                            prefix={<AiOutlineUser />}
-                            className="bg-[#EBEBEB] p-2"
-                        />
+                    <Form.Item
+                        name="user_name"
+                        rules={[{ required: true, message: "Please input your username!" }]}
+                    >
+                        <Input placeholder="Input user name" prefix={<AiOutlineUser />} />
                     </Form.Item>
 
-                    <Form.Item name="password">
+                    <Form.Item
+                        name="password"
+                        rules={[
+                            {
+                                validator: validatePassword,
+                            },
+                        ]}
+                    >
                         <Input.Password
                             placeholder="Input password"
                             prefix={<PiLockKeyLight className="" />}
-                            className="bg-[#EBEBEB] p-2"
                         />
                     </Form.Item>
                     <Checkbox onChange={onChange}>Remember me</Checkbox>
@@ -101,41 +125,34 @@ const SignUp = () => {
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="w-full h-[55px] bg-[#267BFA] shadow-md rounded-[30px] "
+                            className="w-full  bg-[#267BFA] shadow-md rounded-[30px] mt-4"
                         >
                             Sign Up
                         </Button>
                     </Form.Item>
                 </Form>
-                <div className="flex items-center justify-center gap-2" >
-                    <div className="h-[1px] w-full bg-black bg-opacity-80" ></div>
+                <div className="flex items-center justify-center gap-2">
+                    <div className="h-[1px] w-full bg-black bg-opacity-80"></div>
                     <div>or</div>
-                    <div className="h-[1px] w-full bg-black bg-opacity-80" ></div>
-
+                    <div className="h-[1px] w-full bg-black bg-opacity-80"></div>
                 </div>
-                <div className="w-[16px] h-[16px]">
-
-
-                    <GoogleOAuthProvider
-                        clientId="812888106047-eu7o2somicm7ogenhodihh1jpbjc9a7c.apps.googleusercontent.com"
-
-                    >
+                <div className="">
+                    <GoogleOAuthProvider clientId="946264574600-45lpld1c2dibskshl55d79lauhtef8rk.apps.googleusercontent.com">
                         <GoogleLogin
-                            onSuccess={(credentialResponse: any) => {
-                                var decoded = jwt_decode(credentialResponse.credential);
-                                console.log('decoded', decoded);
-                            }}
+                            onSuccess={handleLoginWithSocial}
                             onError={() => {
                                 console.log("Login Failed");
                             }}
                         />
                     </GoogleOAuthProvider>
-
                 </div>
 
+                <div className="text-[14px] text-black text-opacity-60 text-center mt-2">
+                    Already have an account ? <Link href="/login">Sign in</Link>
+                </div>
             </div>
         </div>
     );
 };
 
-export default SignUp;
+export default page;

@@ -1,13 +1,13 @@
 "use client";
 import Header from "@/components/Header";
 import { FC, useState } from "react";
+import { useSelector } from "react-redux";
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
-interface pageProps {}
+const Profile = ({}) => {
+    const user = useSelector((state:any) => state.user)
 
-const page: FC<pageProps> = ({}) => {
     const [activeTab, setActiveTab] = useState("");
-
     const [isDarkMode, setDarkMode] = useState(false);
 
     const toggleDarkMode = (checked: boolean) => {
@@ -18,6 +18,9 @@ const page: FC<pageProps> = ({}) => {
     const handleTabClick = (tabId: string) => {
         setActiveTab(tabId);
     };
+
+    console.log("User: "+ user.name);
+    
 
     
     return (
@@ -32,7 +35,7 @@ const page: FC<pageProps> = ({}) => {
                             <img src="" alt="" />
                         </div>
                         <div className="col-span-2 text-[24px] font-semibold">
-                            Full Name
+                            {user.name}
                         </div>
                     </div>
                     <div className="pt-12 h-[60%]">
@@ -147,4 +150,4 @@ const page: FC<pageProps> = ({}) => {
     ); 
 };
 
-export default page;
+export default Profile;

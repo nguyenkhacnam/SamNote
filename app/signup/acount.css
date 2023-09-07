@@ -1,3 +1,7 @@
 .ant-input {
-    background-color: #EBEBEB;
+    background-color: #EBEBEB !important;
 }
+.ant-input-affix-wrapper {
+    background-color: #EBEBEB !important;
+}
+
