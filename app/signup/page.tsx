@@ -8,63 +8,31 @@ import { GoMail } from "react-icons/go";
 import { PiLockKeyLight } from "react-icons/pi";
 import Image from "next/image";
 import logo from "../../assets/images/6306501 1.png";
-import { useRouter } from "next/navigation";
+import xinh from "../../assets/images/xinh1.jpg";
 import Link from "next/link";
-import "../signup/acount.css";
+import "./acount.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import { validateEmail, validatePassword } from "../login/page";
 import * as message from "../../components/Message/Message";
-import { useDispatch } from 'react-redux'
-import { updateUser } from "@/redux/feature/UserSlice";
-
-export const validatePassword = (rule: any, value: any, callback: any) => {
-    const regex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-    if (!value) {
-        callback("Please input your password.");
-    } else if (!regex.test(value)) {
-        callback(
-            "Password must be 8-16 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character."
-        );
-    } else {
-        callback();
-    }
-};
-
-export const validateEmail = (rule: any, value: any, callback: any) => {
-    if (!value) {
-        callback("Please input your email.");
-    } else {
-        const trimmedValue = value.trim(); // Remove leading and trailing spaces
-        if (trimmedValue === value) {
-            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-            if (!emailRegex.test(trimmedValue)) {
-                callback("Email is not valid.");
-            } else {
-                callback();
-            }
-        } else {
-            callback("Email should not contain leading or trailing spaces.");
-        }
-    }
-};
-
+import { useRouter } from "next/navigation";
 const page = () => {
     const router = useRouter();
-    const dispatch = useDispatch();
     const onFinish = async (values: any) => {
         console.log("Success:", values);
 
+
         try {
             const response = await axios.post(
-                "https://14.225.7.221:18011/login",
+                "https://14.225.7.221:18011/register",
                 values
             );
             console.log(response.data);
-            dispatch(updateUser(response?.data?.user))
             message.success(response?.data?.message);
-            router.push("/");
+            router.push("/login");
         } catch (error: any) {
+            console.log("error", error);
+
             message.error(error?.response?.data?.message);
         }
     };
@@ -80,13 +48,12 @@ const page = () => {
     const handleLoginWithSocial = (credentialResponse: any) => {
         const data = credentialResponse.credential;
         var decoded = jwt_decode(data);
+
         console.log("decoded", data);
     };
-
-
-
-
-
+    // const login = useGoogleLogin({
+    //     onSuccess: (tokenResponse) => console.log(tokenResponse),
+    // });
 
     return (
         <div className="flex items-center justify-center px-[15px] pt-[40px] w-full h-full ">
@@ -101,7 +68,7 @@ const page = () => {
                         className=" w-[150px] h-[154px] object-cover  "
                     />
                 </div>
-                <div className="text-center mb-3">Login to Your Account</div>
+                <div className="text-center mb-3">Create your acount</div>
                 <Form
                     name="basic"
                     wrapperCol={{
@@ -112,12 +79,32 @@ const page = () => {
                     autoComplete="off"
                     className=""
                 >
-                    <Form.Item name="user_name" rules={[{ required: true, message: 'Please input your username!' }]} >
+                    <Form.Item
+                        name="name"
+                        rules={[{ required: true, message: "Please input your username!" }]}
+                    >
                         <Input
-                            placeholder="Input user name"
+                            placeholder="Input name"
                             prefix={<AiOutlineUser />}
                             className="bg-[#EBEBEB] p-2"
                         />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="gmail"
+                        rules={[
+                            {
+                                validator: validateEmail,
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Input Email" prefix={<GoMail />} />
+                    </Form.Item>
+                    <Form.Item
+                        name="user_name"
+                        rules={[{ required: true, message: "Please input your username!" }]}
+                    >
+                        <Input placeholder="Input user name" prefix={<AiOutlineUser />} />
                     </Form.Item>
 
                     <Form.Item
@@ -131,7 +118,6 @@ const page = () => {
                         <Input.Password
                             placeholder="Input password"
                             prefix={<PiLockKeyLight className="" />}
-                            className="bg-[#EBEBEB] p-2"
                         />
                     </Form.Item>
                     <Checkbox onChange={onChange}>Remember me</Checkbox>
@@ -139,9 +125,9 @@ const page = () => {
                         <Button
                             type="primary"
                             htmlType="submit"
-                            className="w-full h-[55px] bg-[#267BFA] shadow-md rounded-[30px] "
+                            className="w-full  bg-[#267BFA] shadow-md rounded-[30px] mt-4"
                         >
-                            Login
+                            Sign Up
                         </Button>
                     </Form.Item>
                 </Form>
@@ -162,7 +148,7 @@ const page = () => {
                 </div>
 
                 <div className="text-[14px] text-black text-opacity-60 text-center mt-2">
-                    Don’t have an account ? <Link href="/signup" className="text-red" > Sign up</Link>
+                    Already have an account ? <Link href="/login">Sign in</Link>
                 </div>
             </div>
         </div>
