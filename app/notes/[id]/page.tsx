@@ -1,11 +1,17 @@
 import { FC } from "react";
 import UpdateNote from '@/components/UpdateNote/UpdateNote'
-interface pageProps {}
+interface pageProps {
+  params: {
+    id: string
+  }
+}
 
-const page: FC<pageProps> = ({}) => {
+const page: FC<pageProps> = ({ params }) => {
   return (
     <div>
-      <UpdateNote />
+      <UpdateNote 
+        idNote={params?.id}
+      />
     </div>
   );
 };

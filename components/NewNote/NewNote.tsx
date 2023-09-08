@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { FC } from 'react'
 import ColorItem from '../ColorItem/ColorItem'
 import Toolbars from '../Toolbars/Toolbars'
 import './NewNote.css'
@@ -9,12 +9,13 @@ import { useState, useRef, useEffect } from 'react'
 import { BsPin } from 'react-icons/bs'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
 
-interface RootState {
+interface NewNoteProps {
   user: {
     id: number;
     name: string;
-  } | null;
+  },
   color: {
     r: number;
     g: number;
@@ -23,7 +24,7 @@ interface RootState {
   }
 }
 
-const NewNote = () => {
+const NewNote: FC<NewNoteProps> = ({ }) => {
   const colors: string[] = ['#FEF5CB', '#E0FCDB', '#FFDDED', '#E1CAFA', '#D8ECFF', '#E8E8E8', '#696969']
   const initialColor = {
     r: 254,
@@ -31,6 +32,9 @@ const NewNote = () => {
     b: 203,
     a: 1,
   }
+
+  const router = useRouter()
+
   const titleRef = useRef();
   const contentRef = useRef();
   const inputTitleRef = useRef(null);
@@ -40,8 +44,8 @@ const NewNote = () => {
   const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
   const [valueTitle, setValueTitle] = useState('')
   const [valueContents, setValueContents] = useState('')
-  const [color, setColor] = useState<RootState['color']>(initialColor)
-  const [idFolder, setIdFolder] = useState(0)
+  const [color, setColor] = useState<NewNoteProps['color']>(initialColor)
+  const [idFolder, setIdFolder] = useState(null)
   const [dueAt, setDueAt] = useState(null)
   const [remindAt, setRemindAt] = useState(null)
   const [lock, setLock] = useState(null)
@@ -54,12 +58,12 @@ const NewNote = () => {
   const [activeIcon, setActiveIcon] = useState(null);
 
   // console.log('datasaldkfj', valueTitle, color, idFolder, remindAt)
-  const userData: RootState['user'] = useSelector((state: RootState) => state.user)
+  const userData: NewNoteProps['user'] = useSelector((state: NewNoteProps) => state.user)
   const userId: number | undefined = userData?.id
   // console.log('user', userData)
   // console.log('user', userData?.id)
 
-  const hexToRgba = (hex: string, alpha: number = 1): RootState['color'] | null => {
+  const hexToRgba = (hex: string, alpha: number = 1): NewNoteProps['color'] | null => {
     const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     hex = hex.replace(shorthandRegex, (m, r, g, b) => {
       return r + r + g + g + b + b;
@@ -161,8 +165,9 @@ const NewNote = () => {
     }
   };
 
-  const handleClickBtn = () => {
-    createNewNote();
+  const handleClickBtn = async () => {
+    await createNewNote();
+    router.push('/')
   };
 
   return (
