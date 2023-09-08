@@ -1,13 +1,18 @@
-import { FC } from "react";
-import UpdateNote from '@/components/UpdateNote/UpdateNote'
-interface pageProps {}
+"use client";
 
-const page: FC<pageProps> = ({}) => {
-  return (
-    <div>
-      <UpdateNote />
-    </div>
-  );
+import UpdateNote from "@/components/UpdateNote/UpdateNote";
+import { useRouter } from "next/router";
+
+const Notes = ({}) => {
+    const route = useRouter();
+
+    console.log(route.query);
+
+    return (
+        <div>
+            <UpdateNote />
+        </div>
+    );
 };
 
-export default page;
+export default Notes;

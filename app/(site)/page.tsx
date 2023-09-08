@@ -8,13 +8,14 @@ import { useSelector } from "react-redux";
 interface Note {
     idNote: number;
     data: string;
-    color: object;
+    color: any;
     createAt: string;
     title: string;
 }
 
 export default function Home() {
     const [notes, setNotes] = useState<Note[]>([]);
+    const [displayState, setDisplayState] = useState("list");
     const user = useSelector((store: any) => store.user);
     console.log(user);
 
@@ -40,11 +41,21 @@ export default function Home() {
         fetchData();
     }, []);
 
-    console.log(notes);
+    // if (displayState === "sortbydate") {
+    //     setNotes((prevState) => {
+    //         return prevState.reverse();
+    //     });
+    // }
+    // console.log(notes);
+
     return (
-        <div className="h-screen md:h-full w-full md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px]">
-            <Header />
-            <div className="pt-5 flex flex-col gap-3">
+        <div className="h-full w-full md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px]">
+            <Header
+                user={user}
+                num_notes={notes?.length}
+                setDisplayState={setDisplayState}
+            />
+            <div className="pt-5 pb-[150px] flex flex-col gap-3">
                 {notes?.map((note) => (
                     <NoteItem
                         key={note?.idNote}
