@@ -15,10 +15,11 @@ import { BsSortAlphaDown } from "react-icons/bs";
 interface HeaderProps {
     user: any;
     num_notes: number;
-    setDisplayState: any;
+    // setDisplayState: any;
 }
 
-const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
+const Header: FC<HeaderProps> = ({ user, num_notes }) => {
+    console.log(user.name);
     return (
         <div className="flex items-center justify-between md:gap-5 w-full">
             <div className="flex items-center justify-between w-full">
@@ -78,9 +79,6 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
-                                                onClick={() =>
-                                                    setDisplayState("grid")
-                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"
@@ -105,9 +103,6 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
-                                                onClick={() =>
-                                                    setDisplayState("list")
-                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"
@@ -133,11 +128,6 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
-                                                onClick={() =>
-                                                    setDisplayState(
-                                                        "sortbydate"
-                                                    )
-                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"
@@ -163,11 +153,6 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
-                                                onClick={() =>
-                                                    setDisplayState(
-                                                        "sortbyalphabet"
-                                                    )
-                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"
