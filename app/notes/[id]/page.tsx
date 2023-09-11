@@ -1,18 +1,25 @@
-"use client";
+import { FC } from "react";
+import UpdateNote from '@/components/UpdateNote/UpdateNote'
+interface pageProps {
+  params: {
+    id: number
+  }
+}
 
-import UpdateNote from "@/components/UpdateNote/UpdateNote";
-import { useRouter } from "next/router";
-
-const Notes = ({}) => {
-    const route = useRouter();
-
-    console.log(route.query);
-
-    return (
-        <div>
-            <UpdateNote />
-        </div>
-    );
+const page: FC<pageProps> = ({ params }) => {
+  return (
+    <div>
+      <UpdateNote
+        idNote={params?.id}
+        color={{
+          r: 0,
+          g: 0,
+          b: 0,
+          a: 0
+        }}
+      />
+    </div>
+  );
 };
 
-export default Notes;
+export default page;

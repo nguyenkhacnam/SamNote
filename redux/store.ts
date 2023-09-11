@@ -12,6 +12,7 @@ import {
 } from "redux-persist";
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import UserSlice from "./feature/UserSlice";
+import NotesSlice from "./feature/NotesSlice";
 
 const reduxStateSyncConfig = {
     predicate: (action: any) => {
@@ -36,7 +37,7 @@ const persistedReducer = persistReducer(
     persistConfig,
     combineReducers({
         user: UserSlice,
-        
+        notes: NotesSlice,
     })
 );
 
