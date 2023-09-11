@@ -11,6 +11,7 @@ import { BsGrid } from "react-icons/bs";
 import { BsListUl } from "react-icons/bs";
 import { BsSortDown } from "react-icons/bs";
 import { BsSortAlphaDown } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
 interface HeaderProps {
     user: any;
@@ -19,7 +20,6 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ user, num_notes }) => {
-    // console.log(user.name);
     return (
         <div className="flex items-center justify-between md:gap-5 w-full">
             <div className="flex items-center justify-between w-full">
