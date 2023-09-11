@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { getAllNotes } from "@/redux/feature/NotesSlice";
 
 interface UpdateNoteProps {
-  idNote: number,
+  idNote: number
   color: {
     r: number;
     g: number;

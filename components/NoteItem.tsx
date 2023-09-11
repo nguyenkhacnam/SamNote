@@ -1,6 +1,9 @@
+"use client";
+
 import { FC } from "react";
 import { BiSave } from "react-icons/bi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface NoteItemProps {
   id: number;
