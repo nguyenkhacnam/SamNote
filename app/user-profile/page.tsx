@@ -1,6 +1,5 @@
 "use client";
 import Header from "@/components/Header";
-<<<<<<< HEAD
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,14 +10,6 @@ import * as message from "../../components/Message/Message";
 const Profile = ({}) => {
     const url = "https://lhvn.online/";
     const user = useSelector((state:any) => state.user)
-=======
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { DarkModeSwitch } from "react-toggle-dark-mode";
-
-const Profile = ({}) => {
-    const user = useSelector((state: any) => state.user);
->>>>>>> develop
 
     const [activeTab, setActiveTab] = useState("");
     const [isDarkMode, setDarkMode] = useState(false);
@@ -132,7 +123,6 @@ const Profile = ({}) => {
         }
     };
 
-<<<<<<< HEAD
     const handleDeleteAccount = async () => {
         const userId = profileData?.user?.id;
         try {
@@ -163,18 +153,12 @@ const Profile = ({}) => {
     
       
     
-=======
-    console.log("User: " + user.name);
-
->>>>>>> develop
     return (
         <>
             <div className="h-screen md:h-full w-full md:px-4 md:py-2 lg:px-12 lg:py-4">
-                <Header />
-
-<<<<<<< HEAD
-            <div className="inline-block w-[100%] sm:grid sm:grid-cols-3 xl:grid-cols-4 gap-4 pt-12 ">
-                <div className="col-span-1 bg-gray-300 p-10 rounded-[30px] h-[calc(100vh)] sm:h-[calc(75vh)]">
+                <Header/>
+                <div className="inline-block w-[100%] sm:grid sm:grid-cols-3 xl:grid-cols-4 gap-4 pt-12 ">
+                    <div className="col-span-1 bg-gray-300 p-10 rounded-[30px] h-[calc(100vh)] sm:h-[calc(75vh)]">
                     <div className="grid justify-center xl:flex xl:items-center xl:justify-evenly">
                         <div className="sm:col-span-1 w-[100px] h-[100px] rounded-full">
                             <img src={profileData?.user?.AvtProfile} alt={profileData?.user?.name} className="rounded-full"/>
@@ -215,8 +199,8 @@ const Profile = ({}) => {
                             </li>
                         </ul>
                     </div>
-                </div>
-                <div className="col-span-2 xl:col-span-3 bg-gray-300 p-12 lg:ml-12 rounded-[30px] h-[80vh] mb-32 mt-4 sm:mb-0 sm:mt-0 sm:h-auto">
+                    </div>
+                    <div className="col-span-2 xl:col-span-3 bg-gray-300 p-12 lg:ml-12 rounded-[30px] h-[80vh] mb-32 mt-4 sm:mb-0 sm:mt-0 sm:h-auto">
                     <div className="tab-content h-[100%]">
                         <div id="edit-profile" className={`container tab-pane ${activeTab === "edit-profile" ? "active h-[100%]" : "hidden"}`}>
                             <div className="h-[100%] px-8">
@@ -245,180 +229,6 @@ const Profile = ({}) => {
                                         <button type="button" className="bg-white p-4" onClick={updateUserData}>Save</button>                                          
                                     </div>
                                 </form>
-=======
-                <div className="inline-block w-[100%] sm:grid sm:grid-cols-3 xl:grid-cols-4 gap-4 pt-12 ">
-                    <div className="col-span-1 bg-gray-300 p-10 rounded-[30px] h-[calc(100vh)] sm:h-[calc(75vh)]">
-                        <div className="grid justify-center xl:flex xl:items-center xl:justify-evenly">
-                            <div className="sm:col-span-1 bg-red-600 w-[100px] h-[100px] rounded-full">
-                                <img src="" alt="" />
-                            </div>
-                            <div className="col-span-2 text-[24px] font-semibold">
-                                {user.name}
->>>>>>> develop
-                            </div>
-                        </div>
-                        <div className="pt-12 h-[60%]">
-                            <ul className="h-[100%] grid">
-                                <li
-                                    className={
-                                        activeTab === "edit-profile"
-                                            ? "text-blue-500"
-                                            : ""
-                                    }
-                                >
-                                    <a
-                                        href="#edit-profile"
-                                        className="font-semibold text-[20px]"
-                                        onClick={() =>
-                                            handleTabClick("edit-profile")
-                                        }
-                                    >
-                                        Edit profile
-                                    </a>
-                                </li>
-                                <li
-                                    className={
-                                        activeTab === "setting"
-                                            ? "text-blue-500"
-                                            : ""
-                                    }
-                                >
-                                    <a
-                                        href="#setting"
-                                        className="font-semibold text-[20px]"
-                                        onClick={() =>
-                                            handleTabClick("setting")
-                                        }
-                                    >
-                                        Setting
-                                    </a>
-                                </li>
-                                <li
-                                    className={
-                                        activeTab === "language"
-                                            ? "text-blue-500"
-                                            : ""
-                                    }
-                                >
-                                    <a
-                                        href="#language"
-                                        className="font-semibold text-[20px]"
-                                        onClick={() =>
-                                            handleTabClick("language")
-                                        }
-                                    >
-                                        Language
-                                    </a>
-                                </li>
-                                <li
-                                    className={
-                                        activeTab === "dark-mode"
-                                            ? "text-blue-500 flex justify-between"
-                                            : "flex justify-between"
-                                    }
-                                >
-                                    <a
-                                        href="#dark-mode"
-                                        className="font-semibold text-[20px]"
-                                        onClick={() =>
-                                            handleTabClick("dark-mode")
-                                        }
-                                    >
-                                        Dark Mode
-                                    </a>
-                                    <DarkModeSwitch
-                                        style={{}}
-                                        checked={isDarkMode}
-                                        onChange={toggleDarkMode}
-                                        size={32}
-                                    />
-                                </li>
-                                <li
-                                    className={
-                                        activeTab === "help-about"
-                                            ? "text-blue-500"
-                                            : ""
-                                    }
-                                >
-                                    <a
-                                        href="#help-about"
-                                        className="font-semibold text-[20px]"
-                                        onClick={() =>
-                                            handleTabClick("help-about")
-                                        }
-                                    >
-                                        Help & About
-                                    </a>
-                                </li>
-                                <li
-                                    className={
-                                        activeTab === "log-out"
-                                            ? "text-blue-500"
-                                            : ""
-                                    }
-                                >
-                                    <a
-                                        href="#log-out"
-                                        className="font-semibold text-[20px]"
-                                        onClick={() =>
-                                            handleTabClick("log-out")
-                                        }
-                                    >
-                                        Log Out
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="col-span-2 xl:col-span-3 bg-gray-300 p-12 lg:ml-12 rounded-[30px] h-[80vh] mb-32 mt-4 sm:mb-0 sm:mt-0 sm:h-auto">
-                        <div className="tab-content h-[100%]">
-                            <div
-                                id="edit-profile"
-                                className={`container tab-pane ${
-                                    activeTab === "edit-profile"
-                                        ? "active h-[100%]"
-                                        : "hidden"
-                                }`}
-                            >
-                                <div className="h-[100%] px-8">
-                                    <form action="" className="grid h-[100%]">
-                                        <div className="grid content-center">
-                                            <label
-                                                htmlFor=""
-                                                className="pt-4 font-semibold text-[20px]"
-                                            >
-                                                Name
-                                            </label>
-                                            <input
-                                                type="text"
-                                                name="name"
-                                                className="w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4"
-                                            />
-                                        </div>
-                                        <label
-                                            htmlFor=""
-                                            className="font-semibold text-[20px]"
-                                        >
-                                            Avatar
-                                        </label>
-
-                                        <label
-                                            htmlFor=""
-                                            className="font-semibold text-[20px]"
-                                        >
-                                            Background
-                                        </label>
-
-                                        <div className="m-auto mr-0 font-semibold text-[20px]">
-                                            <button className="bg-white p-4 mr-12">
-                                                Cancel
-                                            </button>
-
-                                            <button className="bg-white p-4">
-                                                Save
-                                            </button>
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                             <div
@@ -552,7 +362,6 @@ const Profile = ({}) => {
                             >
                                 <h3>Help & About</h3>
                             </div>
-                        </div>
                         <div id="deleteAccount" className={`container tab-pane ${activeTab === "deleteAccount" ? "active" : "hidden"}`}>
                             <div className="h-[100%] px-8">
                                     <form action="" className="grid h-[100%]">
@@ -602,6 +411,7 @@ const Profile = ({}) => {
                                     </div>
                                 </div>
                                 )}
+                        </div>
                         </div>
                     </div>
                 </div>

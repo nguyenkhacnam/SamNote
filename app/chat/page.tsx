@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import { FC } from "react";
 import { CiSearch, CiMenuBurger, CiImageOn } from "react-icons/ci";
 import { TfiMenuAlt, TfiHeart } from "react-icons/tfi";
@@ -7,6 +6,7 @@ import avaOnl from "../../assets/images/avaOnl.png";
 import "./chat.css"
 
 import Image from "next/image";
+import Header from "@/components/Header";
 
 
 const Chat = () => {

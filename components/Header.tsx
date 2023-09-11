@@ -19,7 +19,7 @@ interface HeaderProps {
 }
 
 const Header: FC<HeaderProps> = ({ user, num_notes }) => {
-    console.log(user.name);
+    // console.log(user.name);
     return (
         <div className="flex items-center justify-between md:gap-5 w-full">
             <div className="flex items-center justify-between w-full">
