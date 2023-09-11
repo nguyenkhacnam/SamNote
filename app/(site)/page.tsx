@@ -15,13 +15,11 @@ interface Note {
 }
 
 export default function Home() {
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
     const [notes, setNotes] = useState<Note[]>([]);
     // const [displayState, setDisplayState] = useState("list");
     const user = useSelector((store: any) => store.user);
     console.log(user);
-
-    
 
     const fetchData = async () => {
         try {
