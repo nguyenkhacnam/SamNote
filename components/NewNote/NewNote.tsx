@@ -7,9 +7,12 @@ import './NewNote.css'
 import { useState, useRef, useEffect } from 'react'
 
 import { BsPin } from 'react-icons/bs'
+import { IoChevronBackSharp } from 'react-icons/io5'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import ColorNote from '../ColorNote/ColorNote'
 
 interface NewNoteProps {
   user: {
@@ -171,26 +174,36 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
   };
 
   return (
-    <div className='w-full bg-black xl:bg-transparent'>
-      <div className='bg-[#d84646] w-full h-full 
+    <div className=''>
+      <div className='bg-[#F7F7F7] w-full h-screen
       xl:bg-transparent'>
+        <div className=' flex pt-[29px] justify-center items-center
+        xl:hidden'>
+          <Link href='/'><IoChevronBackSharp className='w-6 h-6 self-center cursor-pointer' /></Link>
+          <h2 className='flex-1 text-center text-[20px] font-semibold self-center '>Bar charts in statistics</h2>
+        </div>
+        <div className='  mx-[-23px]
+          xl:hidden
+        '>
+          <Toolbars titleTextColor={titleTextColor} />
+        </div>
         <div className='xl:flex xl:justify-center xl:mt-0 xl:pt-0
-        flex justify-center pt-[177px]  '>
+        flex justify-center pt-[110px]'>
           <div className={` xl:flex xl:flex-col xl:justify-between xl:min-w-[1368px] xl:max-w-[1000px] xl:min-h-[587px] xl:rounded-[20px]
-          flex flex-col justify-between relative min-w-full max-w-[640px] rounded-[20px] bg-[${currentColor}]`} style={{ backgroundColor: currentColor }}>
-            <div className=' xl:relative xl:pt-6 xl:px-[68px] 
-            relative pt-6 px-[68px] '>
+          flex flex-col gap-[30px] justify-between relative min-w-full max-w-[640px] rounded-[20px] shadow-md bg-[${currentColor}]`} style={{ backgroundColor: currentColor }}>
+            <div className='xl:pt-6 xl:px-[68px] 
+            relative pt-6 px-[22px] '>
               <div className=' xl:absolute xl:right-[68px] xl:w-[35px] xl:h-[35px] xl:bg-white xl:flex xl:justify-center xl:items-center xl:rounded-full
-              absolute right-[68px] w-[35px] h-[35px] bg-white flex justify-center items-center rounded-full'>
+              absolute right-[68px] w-[35px] h-[35px] bg-white flex justify-center items-center rounded-full hidden'>
                 <BsPin className=' xl:text-[28px] xl:cursor-pointer
                 text-[28px] cursor-pointer' />
               </div>
               <div className=' xl:flex xl:justify-center
-              flex justify-center'>
+              flex justify-center hidden'>
                 <h2 className={`text-2xl font-semibold ${titleTextColor}`}>Create Note</h2>
               </div>
               <div className=' xl:flex xl:flex-col
-              flex flex-col'>
+              '>
                 <label
                   htmlFor="inputTitleField"
                   className={`text-2xl font-semibold cursor-pointer ${titleTextColor}`}
@@ -202,9 +215,10 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
                   <textarea name="textarea"
                     id="inputTitleField"
                     className=' xl:title xl:text-xl
-                    title text-xl'
+                    title text-lg'
                     style={{ backgroundColor: currentColor }}
                     ref={titleRef}
+                    placeholder='Title...'
                     onChange={handleTitleChange}
                   >
                   </textarea>
@@ -215,7 +229,7 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
               flex flex-col'>
                 <label
                   htmlFor="inputContentField"
-                  className={`text-2xl font-semibold cursor-pointer ${titleTextColor}`}
+                  className={`text-2xl font-semibold cursor-pointer xl:flex ${titleTextColor}`}
                   onClick={() => handleLabelClick(inputContentRef)}
                 >
                   Contents
@@ -223,10 +237,11 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
                 <div>
                   <textarea name="textarea"
                     id='inputContentField'
-                    className=' xl:content xl:text-xl
-                    content text-xl'
+                    className='xl:text-xl
+                    content text-xs'
                     style={{ backgroundColor: currentColor }}
                     ref={contentRef}
+                    placeholder='Contents...'
                     onChange={handleContentsChange}
                   >
                   </textarea>
@@ -240,10 +255,32 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
                 {/* <div className='container' ref={wrapperRefSnow}></div> */}
               </div>
             </div>
-            <div className=' xl:flex xl:justify-between xl:pl-[44px] xl:pr-[54px] xl:pt-[33px] xl:pb-[66px] xl:sticky
-            flex justify-between pt-[33px] pb-[66px]'>
-              <div className='flex items-center
-              xl:flex xl:gap-[30px] xl:items-center
+            <div className=' flex flex-col justify-around items-center w-full h-[195px] bg-[#D9D9D9] rounded-[30px]
+            xl:hidden'>
+              <div className='w-full'>
+                <p>Color</p>
+                <ColorNote
+                  setCurrentColor={setCurrentColor}
+                  setColor={setColor}
+                  setTitleTextColor={setTitleTextColor}
+                  hexToRgba={hexToRgba}
+                />
+              </div>
+              <div className='w-full'>
+                <p>Font</p>
+                <ColorNote
+                  setCurrentColor={setCurrentColor}
+                  setColor={setColor}
+                  setTitleTextColor={setTitleTextColor}
+                  hexToRgba={hexToRgba}
+                />
+              </div>
+            </div>
+            <div className=' xl:flex xl:justify-between xl:pl-[44px] xl:pr-[54px] xl:pt-[33px] xl:pb-[66px]
+            flex justify-between pt-0 pb-0'>
+
+              <div className='flex items-center xl:sticky xl:block
+              xl:flex xl:gap-[30px] xl:items-center absolute hidden
               '>
                 {
                   colors?.map((color: string, index: number) => (
@@ -255,8 +292,8 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
                   ))
                 }
               </div>
-                <Toolbars titleTextColor={titleTextColor}/>
-                {/* <div className=' xl:flex xl:items-center xl:gap-[30px] xl:text-[32px] xl:sticky xl:bg-transparent xl:h-auto xl:w-auto
+              <div className='hidden xl:block'><Toolbars titleTextColor={titleTextColor} /></div>
+              {/* <div className=' xl:flex xl:items-center xl:gap-[30px] xl:text-[32px] xl:sticky xl:bg-transparent xl:h-auto xl:w-auto
               flex items-center gap-[30px] text-[32px] absolute top-[104px] bg-[#D9D9D9] h-[73px]'>
                 <RiFontSize className={`icon-note text-[#267BFA] ${titleTextColor}`} />
                 <BsListUl className={`icon-note ${titleTextColor}`} />

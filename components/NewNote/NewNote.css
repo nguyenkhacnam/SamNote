@@ -8,11 +8,11 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 .title {
-  @apply w-full min-h-[70px] p-4 resize-none outline-none max-h-[90px]
+  @apply w-full xl:min-h-[70px] xl:p-4 resize-none outline-none xl:max-h-[90px]
 }
 
 .content {
-  @apply w-full min-h-[240px]  p-4 resize-none outline-none max-h-[240px] mt-2
+  @apply w-full min-h-[240px]  xl:p-4 resize-none outline-none max-h-[240px] xl:mt-2
 
 }
 
