@@ -4,7 +4,8 @@ import Header from "@/components/Header";
 import NoteItem from "@/components/NoteItem";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
+import { getAllNotes } from "@/redux/feature/NotesSlice";
 interface Note {
     idNote: number;
     data: string;
@@ -14,15 +15,22 @@ interface Note {
 }
 
 export default function Home() {
+    const dispatch = useDispatch(); 
     const [notes, setNotes] = useState<Note[]>([]);
     // const [displayState, setDisplayState] = useState("list");
     const user = useSelector((store: any) => store.user);
     console.log(user);
 
+    
+
     const fetchData = async () => {
         try {
             const response = await fetch(
+<<<<<<< HEAD
                 `https://lhvn.online/notes/${user.id}`
+=======
+                `https://14.225.7.221:18011/notes/${user.id}`,{ next: { revalidate: 3600 }, cache: "no-store" }
+>>>>>>> 380f269f25bbcbe2cac7744d0c185a4858a46576
             );
 
             if (!response.ok) {
@@ -30,7 +38,8 @@ export default function Home() {
             }
 
             const data = await response.json();
-
+            // console.log('data.note', data.notes)
+            dispatch(getAllNotes(data.notes));
             setNotes(data?.notes);
         } catch (error) {
             console.log(error);
