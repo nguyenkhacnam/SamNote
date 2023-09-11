@@ -14,7 +14,7 @@ import "../signup/acount.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import * as message from "../../components/Message/Message";
-import { useDispatch } from 'react-redux'
+import { useDispatch } from "react-redux";
 import { updateUser } from "@/redux/feature/UserSlice";
 
 export const validatePassword = (rule: any, value: any, callback: any) => {
@@ -37,7 +37,8 @@ export const validateEmail = (rule: any, value: any, callback: any) => {
     } else {
         const trimmedValue = value.trim(); // Remove leading and trailing spaces
         if (trimmedValue === value) {
-            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            const emailRegex =
+                /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             if (!emailRegex.test(trimmedValue)) {
                 callback("Email is not valid.");
             } else {
@@ -61,7 +62,7 @@ const page = () => {
                 values
             );
             console.log(response.data);
-            dispatch(updateUser(response?.data?.user))
+            dispatch(updateUser(response?.data?.user));
             message.success(response?.data?.message);
             router.push("/");
         } catch (error: any) {
@@ -82,11 +83,6 @@ const page = () => {
         var decoded = jwt_decode(data);
         console.log("decoded", data);
     };
-
-
-
-
-
 
     return (
         <div className="flex items-center justify-center px-[15px] pt-[40px] w-full h-full ">
@@ -112,7 +108,15 @@ const page = () => {
                     autoComplete="off"
                     className=""
                 >
-                    <Form.Item name="user_name" rules={[{ required: true, message: 'Please input your username!' }]} >
+                    <Form.Item
+                        name="user_name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please input your username!",
+                            },
+                        ]}
+                    >
                         <Input
                             placeholder="Input user name"
                             prefix={<AiOutlineUser />}
@@ -162,7 +166,11 @@ const page = () => {
                 </div>
 
                 <div className="text-[14px] text-black text-opacity-60 text-center mt-2">
-                    Don’t have an account ? <Link href="/signup" className="text-red" > Sign up</Link>
+                    Don’t have an account ?{" "}
+                    <Link href="/signup" className="text-red">
+                        {" "}
+                        Sign up
+                    </Link>
                 </div>
             </div>
         </div>

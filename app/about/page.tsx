@@ -12,9 +12,11 @@ import google from "../../assets/images/google.svg";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const About = ({}) => {
     const router = useRouter();
+
     return (
         <div className="py-5 md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px] md:h-[calc(100vh-80px)] h-screen">
             <div>

@@ -5,7 +5,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Navigation from "@/components/Navigation";
 import { usePathname } from "next/navigation";
-import StyledComponentsRegistry from './lib/AntdRegistry';
+import StyledComponentsRegistry from "./lib/AntdRegistry";
 
 export const metadata: Metadata = {
     title: "SamNote",

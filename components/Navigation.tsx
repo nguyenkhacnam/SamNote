@@ -69,7 +69,7 @@ const Navigation: FC<NavigationProps> = ({ children }) => {
                     <CiCircleQuestion className="md:text-[40px]" />
                 </Link>
             </div>
-            <main className="w-full">{children}</main>
+            <main className="w-full h-full">{children}</main>
         </div>
     );
 };
