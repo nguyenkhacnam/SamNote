@@ -1,6 +1,5 @@
 "use client";
 
-import { Menu, Transition } from "@headlessui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { FaDotCircle } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
@@ -23,49 +22,6 @@ import {
 import { Fragment, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-
-const meetings = [
-    {
-        id: 1,
-        name: "Leslie Alexander",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        startDatetime: "2023-09-05T13:00",
-        endDatetime: "2023-09-11T14:30",
-    },
-    {
-        id: 2,
-        name: "Michael Foster",
-        imageUrl:
-            "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        startDatetime: "2023-09-06T09:00",
-        endDatetime: "2023-09-06T11:30",
-    },
-    {
-        id: 3,
-        name: "Dries Vincent",
-        imageUrl:
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        startDatetime: "2023-09-20T17:00",
-        endDatetime: "2023-09-20T18:30",
-    },
-    {
-        id: 4,
-        name: "Leslie Alexander",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        startDatetime: "2023-09-09T13:00",
-        endDatetime: "2023-09-09T14:30",
-    },
-    {
-        id: 5,
-        name: "Michael Foster",
-        imageUrl:
-            "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        startDatetime: "2023-10-13T14:00",
-        endDatetime: "2023-10-13T14:30",
-    },
-];
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
