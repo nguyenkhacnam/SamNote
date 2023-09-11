@@ -17,7 +17,7 @@ interface Note {
 export default function Home() {
     const dispatch = useDispatch(); 
     const [notes, setNotes] = useState<Note[]>([]);
-    const [displayState, setDisplayState] = useState("list");
+    // const [displayState, setDisplayState] = useState("list");
     const user = useSelector((store: any) => store.user);
     console.log(user);
 
@@ -26,7 +26,11 @@ export default function Home() {
     const fetchData = async () => {
         try {
             const response = await fetch(
+<<<<<<< HEAD
+                `https://lhvn.online/notes/${user.id}`
+=======
                 `https://14.225.7.221:18011/notes/${user.id}`,{ next: { revalidate: 3600 }, cache: "no-store" }
+>>>>>>> 380f269f25bbcbe2cac7744d0c185a4858a46576
             );
 
             if (!response.ok) {
@@ -46,6 +50,8 @@ export default function Home() {
         fetchData();
     }, []);
 
+    console.log(notes);
+
     // if (displayState === "sortbydate") {
     //     setNotes((prevState) => {
     //         return prevState.reverse();
@@ -58,7 +64,7 @@ export default function Home() {
             <Header
                 user={user}
                 num_notes={notes?.length}
-                setDisplayState={setDisplayState}
+                // setDisplayState={setDisplayState}
             />
             <div className="pt-5 pb-[150px] flex flex-col gap-3">
                 {notes?.map((note) => (
