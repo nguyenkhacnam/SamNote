@@ -35,8 +35,8 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
 
   const router = useRouter()
 
-  const titleRef = useRef();
-  const contentRef = useRef();
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
   const inputTitleRef = useRef(null);
   const inputContentRef = useRef(null);
 
@@ -156,7 +156,7 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
         type,
       };
 
-      const response = await axios.post(`https://14.225.7.221:18011/notes/${userId}`, requestBody);
+      const response = await axios.post(`https://lhvn.online/notes/${userId}`, requestBody);
       console.log('New note created:', response.data.note);
       const { updateAt } = response.data.note //color, idFolder, dueAt, remindAt, lock, notePublic, pinned, share, type
       setUpdateAt(updateAt)
@@ -171,11 +171,12 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
   };
 
   return (
-    <div className='bg-[#F7F7F7] xl:bg-transparent'>
+    <div className='bg-[#d84646] w-full
+    xl:bg-transparent'>
       <div className='xl:flex xl:justify-center xl:mt-0
-      flex justify-center mt-[177px]'>
+      flex justify-center mt-[177px] '>
         <div className={` xl:flex xl:flex-col xl:justify-between xl:min-w-[1368px] xl:max-w-[1000px] xl:min-h-[587px] xl:rounded-[20px]
-        flex flex-col justify-between max-w-[640px] rounded-[20px] bg-[${currentColor}]`} style={{ backgroundColor: currentColor }}>
+        flex flex-col justify-between relative min-w-full max-w-[640px] rounded-[20px] bg-[${currentColor}]`} style={{ backgroundColor: currentColor }}>
           <div className=' xl:relative xl:pt-6 xl:px-[68px] 
           relative pt-6 px-[68px] '>
             <div className=' xl:absolute xl:right-[68px] xl:w-[35px] xl:h-[35px] xl:bg-white xl:flex xl:justify-center xl:items-center xl:rounded-full
@@ -239,9 +240,10 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
             </div>
           </div>
           <div className=' xl:flex xl:justify-between xl:pl-[44px] xl:pr-[54px] xl:pt-[33px] xl:pb-[66px] xl:sticky
-          flex justify-between pl-[44px] pr-[54px] pt-[33px] pb-[66px]'>
-            <div className='xl:flex xl:gap-[30px] xl:items-center
-            flex gap-[30px] items-center'>
+          flex justify-between pt-[33px] pb-[66px]'>
+            <div className='
+            xl:flex xl:gap-[30px] xl:items-center
+            flex items-center'>
               {
                 colors?.map((color: string, index: number) => (
                   <ColorItem

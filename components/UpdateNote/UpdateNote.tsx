@@ -58,8 +58,8 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   const [currentColor, setCurrentColor] = useState(rgbaToHex(rgbaColor))
 
 
-  const titleRef = useRef();
-  const contentRef = useRef();
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
   const inputTitleRef = useRef(null);
   const inputContentRef = useRef(null);
 
@@ -201,7 +201,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
         type
       };
 
-      const response = await axios.patch(`https://14.225.7.221:18011/notes/${idNote}`, requestBody);
+      const response = await axios.patch(`https://lhvn.online/notes/${idNote}`, requestBody);
       console.log('Update note success:', response.data.note);
       // dispatch(getAllNotes(response.data.note));
       // const { updateAt } = response.data.note //color, idFolder, dueAt, remindAt, lock, notePublic, pinned, share, type

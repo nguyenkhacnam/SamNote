@@ -26,11 +26,7 @@ export default function Home() {
     const fetchData = async () => {
         try {
             const response = await fetch(
-<<<<<<< HEAD
                 `https://lhvn.online/notes/${user.id}`
-=======
-                `https://14.225.7.221:18011/notes/${user.id}`,{ next: { revalidate: 3600 }, cache: "no-store" }
->>>>>>> 380f269f25bbcbe2cac7744d0c185a4858a46576
             );
 
             if (!response.ok) {
