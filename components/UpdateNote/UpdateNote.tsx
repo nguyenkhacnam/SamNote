@@ -171,7 +171,6 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   }, [selectedNote]);
 
   useEffect(() => {
-    // Kiểm tra nếu createAt có giá trị thì đặt isNoteEdited thành true
     if (createAt) {
       setIsNoteEdited(true);
     }
@@ -181,16 +180,6 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
     setupAutoResize(titleRef);
     setupAutoResize(contentRef);
   }, []);
-
-  // const handleTitleChange = (event: any) => {
-  //   console.log('title', event.target.value)
-  //   setValueTitle(event.target.value);
-  // };
-
-  // const handleContentsChange = (event: any) => {
-  //   console.log('contents', event.target.value)
-  //   setValueContents(event.target.value);
-  // };
 
   const updateNote = async () => {
     try {

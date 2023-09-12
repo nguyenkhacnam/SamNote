@@ -24,9 +24,7 @@ export default function RootLayout({
                 <Providers>
                     <StyledComponentsRegistry>
                         {pathName === "/login" ||
-                        pathName === "/signup" ||
-                        pathName === "/add-note" ||
-                        pathName === `/notes/:id` ? (
+                        pathName === "/signup" ? (
                             children
                         ) : (
                             <Navigation>{children}</Navigation>
