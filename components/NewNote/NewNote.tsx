@@ -60,6 +60,7 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
   const [updateAt, setUpdateAt] = useState('')
   const [isNoteEdited, setIsNoteEdited] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
+  const [outputList, setOutputList] = useState([]);
 
   // console.log('datasaldkfj', valueTitle, color, idFolder, remindAt)
   const userData: NewNoteProps['user'] = useSelector((state: NewNoteProps) => state.user)
@@ -142,6 +143,12 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
   const handleContentsChange = (event: any) => {
     console.log('contents', event.target.value)
     setValueContents(event.target.value);
+    const lines = valueContents.split('\n');
+    const olList: any = lines.map((line, index) => (
+      <li key={index}>{line}</li>
+    ));
+
+    setOutputList(olList);
   };
 
   const createNewNote = async () => {
@@ -303,6 +310,9 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
               hexToRgba={hexToRgba}
             />
           </div>
+        </div>
+        <div>
+          <ol>{outputList}</ol> {/* Hiển thị danh sách dạng <ol> ở đây */}
         </div>
       </div>
     </div>

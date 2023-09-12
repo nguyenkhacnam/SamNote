@@ -60,6 +60,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   const [createAt, setCreateAt] = useState(selectedNote.createAt);
   const [currentColor, setCurrentColor] = useState(rgbaToHex(rgbaColor))
 
+  const [hasChanged, setHasChanged] = useState(false);
 
   const titleRef = useRef(null);
   const contentRef = useRef(null);
@@ -71,11 +72,14 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   const handleTitleChange = (event: any) => {
     console.log('title', event.target.value);
     setValueTitle(event.target.value);
+    console.log('setHasChanged', hasChanged)
+    setHasChanged(true)
   };
 
   const handleContentsChange = (event: any) => {
     console.log('contents', event.target.value);
     setValueContents(event.target.value);
+    setHasChanged(true)
   };
 
 
@@ -106,8 +110,8 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
 
   // const hexColor = rgbaToHex(rgbaColor);
   // console.log('màu user tạo note', hexColor);
-  console.log('currentColor', currentColor);
-  console.log('color call api', color);
+  // console.log('currentColor', currentColor);
+  // console.log('color call api', color);
 
 
   function hexToRgba(hex: string): { r: number; g: number; b: number; a: number } | null {
@@ -168,22 +172,6 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
     ref.current?.focus();
   };
 
-  useEffect(() => {
-    setValueTitle(selectedNote.title);
-    setValueContents(selectedNote.data);
-  }, [selectedNote]);
-
-  useEffect(() => {
-    if (createAt) {
-      setIsNoteEdited(true);
-    }
-  }, [createAt]);
-
-  useEffect(() => {
-    setupAutoResize(titleRef);
-    setupAutoResize(contentRef);
-  }, []);
-
   const updateNote = async () => {
     try {
       const requestBody = {
@@ -205,8 +193,50 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
 
   const handleClickUpdateNote = () => {
     updateNote()
-    router.push('/')
+    router.back()
   };
+
+  const handleBackClick = () => {
+    if (hasChanged && window.confirm('Bạn có muốn lưu ghi chú trước khi rời khỏi trang?')) {
+      updateNote()
+      router.back()
+      console.log('back co du lieu')
+    } else {
+      router.back()
+      console.log('back k du lieu')
+    }
+  };
+
+  useEffect(() => {
+    setValueTitle(selectedNote.title);
+    setValueContents(selectedNote.data);
+  }, [selectedNote]);
+
+  useEffect(() => {
+    if (createAt) {
+      setIsNoteEdited(true);
+    }
+  }, [createAt]);
+
+  useEffect(() => {
+    setupAutoResize(titleRef);
+    setupAutoResize(contentRef);
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasChanged) {
+        e.preventDefault();
+        e.returnValue = 'Bạn có muốn lưu ghi chú trước khi rời khỏi trang?';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [hasChanged]);
 
   return (
     <div className=''>
@@ -214,13 +244,20 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
       xl:bg-transparent'>
         <div className=' flex justify-between items-center mt-[30px]
         xl:hidden'>
-          <Link href='/'><IoChevronBackSharp className='w-6 h-6 self-center cursor-pointer' /></Link>
+          <div
+            onClick={handleBackClick}
+          >
+            <IoChevronBackSharp className='w-6 h-6 self-center cursor-pointer' />
+          </div>
           <div className='flex-1 min-h-[30px]'><h2 className='text-[20px] text-center font-semibold self-center'>{valueTitle}</h2></div>
         </div>
         <div className='  mx-[-23px]
           xl:hidden
         '>
-          <Toolbars titleTextColor={titleTextColor} />
+          <Toolbars
+            titleTextColor={titleTextColor}
+            idNote={idNote}
+          />
         </div>
         <div className='xl:flex xl:justify-center xl:mt-0 xl:pt-0
         flex justify-center mt-[100px]'>
@@ -306,7 +343,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
                   ))
                 }
               </div>
-              <div className='hidden xl:block'><Toolbars titleTextColor={titleTextColor} /></div>
+              <div className='hidden xl:block'><Toolbars titleTextColor={titleTextColor} idNote={idNote} /></div>
               <div>
                 <button
                   onClick={handleClickUpdateNote}
@@ -328,6 +365,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
               setColor={setColor}
               setTitleTextColor={setTitleTextColor}
               hexToRgba={hexToRgba}
+              setHasChanged={setHasChanged}
             />
           </div>
           <div className='w-full flex flex-col gap-[7px]'>

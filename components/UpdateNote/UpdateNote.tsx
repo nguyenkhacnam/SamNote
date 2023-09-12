@@ -30,9 +30,9 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
 
   const router = useRouter()
 
-  const dispatch = useDispatch(); 
-  
-  
+  const dispatch = useDispatch();
+
+
   // Tìm note cụ thể bằng idNote
   const idNumber = +idNote
   const selectedNote = notes?.find((note: any) => note.idNote === idNumber);
@@ -42,6 +42,10 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   const [valueContents, setValueContents] = useState(selectedNote.data);
   const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
   const [rgbaColor, setRgbaColor] = useState(selectedNote.color);
+  const [isNoteEdited, setIsNoteEdited] = useState(false);
+  const [activeIcon, setActiveIcon] = useState(null);
+  const [currentColor, setCurrentColor] = useState(rgbaToHex(rgbaColor))
+
   const [color, setColor] = useState<UpdateNoteProps['color']>(selectedNote.color)
   const [idFolder, setIdFolder] = useState(selectedNote.idFolder)
   const [dueAt, setDueAt] = useState(selectedNote.dueAt)
@@ -52,10 +56,10 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   const [share, setShare] = useState(selectedNote.share)
   const [type, setType] = useState(selectedNote.type)
   const [updateAt, setUpdateAt] = useState(selectedNote.updateAt)
-  const [isNoteEdited, setIsNoteEdited] = useState(false);
-  const [activeIcon, setActiveIcon] = useState(null);
   const [createAt, setCreateAt] = useState(selectedNote.createAt);
-  const [currentColor, setCurrentColor] = useState(rgbaToHex(rgbaColor))
+
+  const [note, setNote] = useState('');
+  const [hasChanged, setHasChanged] = useState(false);
 
 
   const titleRef = useRef(null);
@@ -63,20 +67,24 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   const inputTitleRef = useRef(null);
   const inputContentRef = useRef(null);
 
+  console.log('setHasChanged1', hasChanged)
 
-  
+
   const handleTitleChange = (event: any) => {
     console.log('title', event.target.value);
     setValueTitle(event.target.value);
+    console.log('setHasChanged', hasChanged)
+    setHasChanged(true);
   };
-  
+
   const handleContentsChange = (event: any) => {
     console.log('contents', event.target.value);
     setValueContents(event.target.value);
+    setHasChanged(true);
   };
-  
-  
- 
+
+
+
 
   function rgbaToHex(rgbaColor: { r: number; g: number; b: number; a: number }): string {
     const { r, g, b, a } = rgbaColor;
@@ -100,12 +108,12 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
 
     return hexColor;
   }
-  
+
   // const hexColor = rgbaToHex(rgbaColor);
   // console.log('màu user tạo note', hexColor);
   console.log('currentColor', currentColor);
   console.log('color call api', color);
-  
+
 
   function hexToRgba(hex: string): { r: number; g: number; b: number; a: number } | null {
     // Kiểm tra xem chuỗi HEX có đúng định dạng không
@@ -165,22 +173,6 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
     ref.current?.focus();
   };
 
-  useEffect(() => {
-    setValueTitle(selectedNote.title);
-    setValueContents(selectedNote.data);
-  }, [selectedNote]);
-
-  useEffect(() => {
-    if (createAt) {
-      setIsNoteEdited(true);
-    }
-  }, [createAt]);
-
-  useEffect(() => {
-    setupAutoResize(titleRef);
-    setupAutoResize(contentRef);
-  }, []);
-
   const updateNote = async () => {
     try {
       const requestBody = {
@@ -205,12 +197,52 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
     router.push('/')
   };
 
+  // const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   setNote(event.target.value);
+  //   setHasChanged(true);
+  // };
+
+  useEffect(() => {
+    setValueTitle(selectedNote.title);
+    setValueContents(selectedNote.data);
+  }, [selectedNote]);
+
+  useEffect(() => {
+    if (createAt) {
+      setIsNoteEdited(true);
+    }
+  }, [createAt]);
+
+  useEffect(() => {
+    setupAutoResize(titleRef);
+    setupAutoResize(contentRef);
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasChanged) {
+        e.preventDefault();
+        e.returnValue = 'Bạn có muốn lưu ghi chú trước khi rời khỏi trang?';
+      }
+    };
+
+    console.log('handleBeforeUnload ')
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [hasChanged]);
+
+  
+
   return (
     <div className='bg-[#F7F7F7] xl:bg-transparent'>
       <div className='xl:flex xl:justify-center xl:mt-0
       flex justify-center mt-[177px]'>
         <div className={` xl:flex xl:flex-col xl:justify-between xl:min-w-[1368px] xl:max-w-[1000px] xl:min-h-[587px] xl:rounded-[20px]
-        flex flex-col justify-between max-w-[640px] rounded-[20px]`} style={{ backgroundColor: currentColor }}> 
+        flex flex-col justify-between max-w-[640px] rounded-[20px]`} style={{ backgroundColor: currentColor }}>
           <div className=' xl:relative xl:pt-6 xl:px-[68px] 
           relative pt-6 px-[68px] '>
             <div className=' xl:absolute xl:right-[68px] xl:w-[35px] xl:h-[35px] xl:bg-white xl:flex xl:justify-center xl:items-center xl:rounded-full
