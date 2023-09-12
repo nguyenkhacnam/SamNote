@@ -30,7 +30,7 @@ const ColorNote: React.FC<ColorNoteProps> = ({setCurrentColor, setColor, setTitl
   };
 
   return (
-    <div className='flex items-center gap-[20px] absolute w-full justify-between
+    <div className='flex items-center gap-[20px] w-full justify-between
               xl:flex xl:gap-[30px] xl:items-center xl:sticky  
               '>
       {

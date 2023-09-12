@@ -1,5 +1,5 @@
 import { FC } from "react";
-import UpdateNote from '@/components/UpdateNote/UpdateNote'
+import UpdateNote1 from '@/components/UpdateNote1/UpdateNote1'
 interface pageProps {
   params: {
     id: number
@@ -9,7 +9,7 @@ interface pageProps {
 const page: FC<pageProps> = ({ params }) => {
   return (
     <div>
-      <UpdateNote
+      <UpdateNote1
         idNote={params?.id}
         color={{
           r: 0,

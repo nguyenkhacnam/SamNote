@@ -17,6 +17,7 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 .icon-note {
-  @apply cursor-pointer 
+  @apply cursor-pointer w-[28px] h-[28px]
+
 }
 

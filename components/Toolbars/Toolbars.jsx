@@ -10,7 +10,7 @@ const Toolbars = ({ titleTextColor }) => {
   const [activeIcon, setActiveIcon] = useState(null);
   return (
     <div className='
-    grid items-center grid-cols-1 w-full text-[32px] absolute top-[90px] bg-[#D9D9D9] h-[73px]
+    grid items-center grid-cols-1 w-full text-[32px] absolute top-[85px] bg-[#FAE585] h-[73px]
     xl:flex xl:items-center xl:gap-[30px] xl:text-[32px] xl:sticky xl:bg-transparent xl:h-auto xl:w-auto
       '>
       <div className='flex justify-between px-[24px]

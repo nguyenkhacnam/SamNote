@@ -1,25 +1,22 @@
 "use client"
 
-import React, { FC } from 'react'
+import React, { FC } from 'react';
+import { BsPin } from 'react-icons/bs'
 import ColorItem from '../ColorItem/ColorItem'
 import Toolbars from '../Toolbars/Toolbars'
-import './NewNote.css'
+import '../NewNote/NewNote.css'
 import { useState, useRef, useEffect } from 'react'
-
-import { BsPin } from 'react-icons/bs'
-import { IoChevronBackSharp } from 'react-icons/io5'
-import { IoCloseOutline } from 'react-icons/io5'
 import axios from 'axios'
-import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import ColorNote from '../ColorNote/ColorNote'
+import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { getAllNotes } from "@/redux/feature/NotesSlice";
+import Link from 'next/link';
+import { IoChevronBackSharp, IoCloseOutline } from 'react-icons/io5';
+import ColorNote from '../ColorNote/ColorNote';
 
-interface NewNoteProps {
-  user: {
-    id: number;
-    name: string;
-  },
+interface UpdateNoteProps {
+  idNote: number
   color: {
     r: number;
     g: number;
@@ -28,74 +25,116 @@ interface NewNoteProps {
   }
 }
 
-const NewNote: FC<NewNoteProps> = ({ }) => {
+const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
+  // Lấy danh sách các notes từ Redux store
+  const notes = useSelector((state: any) => state.notes.notes);
+  console.log('notes data', notes)
   const colors: string[] = ['#FEF5CB', '#E0FCDB', '#FFDDED', '#E1CAFA', '#D8ECFF', '#E8E8E8', '#696969']
-  const initialColor = {
-    r: 254,
-    g: 245,
-    b: 203,
-    a: 1,
-  }
 
   const router = useRouter()
+
+  const dispatch = useDispatch();
+
+
+  // Tìm note cụ thể bằng idNote
+  const idNumber = +idNote
+  const selectedNote = notes?.find((note: any) => note.idNote === idNumber);
+
+  // Khởi tạo trạng thái ban đầu với giá trị từ selectedNote
+  const [valueTitle, setValueTitle] = useState(selectedNote?.title);
+  const [valueContents, setValueContents] = useState(selectedNote.data);
+  const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
+  const [rgbaColor, setRgbaColor] = useState(selectedNote.color);
+  const [color, setColor] = useState<UpdateNoteProps['color']>(selectedNote.color)
+  const [idFolder, setIdFolder] = useState(selectedNote.idFolder)
+  const [dueAt, setDueAt] = useState(selectedNote.dueAt)
+  const [remindAt, setRemindAt] = useState(selectedNote.remindAt)
+  const [lock, setLock] = useState(selectedNote.lock)
+  const [notePublic, setNotePublic] = useState(selectedNote.notePublic)
+  const [pinned, setPinned] = useState(selectedNote.pinned)
+  const [share, setShare] = useState(selectedNote.share)
+  const [type, setType] = useState(selectedNote.type)
+  const [updateAt, setUpdateAt] = useState(selectedNote.updateAt)
+  const [isNoteEdited, setIsNoteEdited] = useState(false);
+  const [activeIcon, setActiveIcon] = useState(null);
+  const [createAt, setCreateAt] = useState(selectedNote.createAt);
+  const [currentColor, setCurrentColor] = useState(rgbaToHex(rgbaColor))
+
 
   const titleRef = useRef(null);
   const contentRef = useRef(null);
   const inputTitleRef = useRef(null);
   const inputContentRef = useRef(null);
 
-  const [currentColor, setCurrentColor] = useState('#FEF5CB')
-  const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
-  const [valueTitle, setValueTitle] = useState('')
-  const [valueContents, setValueContents] = useState('')
-  const [color, setColor] = useState<NewNoteProps['color']>(initialColor)
-  const [idFolder, setIdFolder] = useState(null)
-  const [dueAt, setDueAt] = useState(null)
-  const [remindAt, setRemindAt] = useState(null)
-  const [lock, setLock] = useState(null)
-  const [notePublic, setNotePublic] = useState(0)
-  const [pinned, setPinned] = useState(false)
-  const [share, setShare] = useState(null)
-  const [type, setType] = useState('text')
-  const [updateAt, setUpdateAt] = useState('')
-  const [isNoteEdited, setIsNoteEdited] = useState(false);
-  const [activeIcon, setActiveIcon] = useState(null);
 
-  // console.log('datasaldkfj', valueTitle, color, idFolder, remindAt)
-  const userData: NewNoteProps['user'] = useSelector((state: NewNoteProps) => state.user)
-  const userId: number | undefined = userData?.id
-  // console.log('user', userData)
-  // console.log('user', userData?.id)
 
-  const hexToRgba = (hex: string, alpha: number = 1): NewNoteProps['color'] | null => {
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, (m, r, g, b) => {
-      return r + r + g + g + b + b;
-    });
+  const handleTitleChange = (event: any) => {
+    console.log('title', event.target.value);
+    setValueTitle(event.target.value);
+  };
 
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (result) {
-      const r = parseInt(result[1], 16);
-      const g = parseInt(result[2], 16);
-      const b = parseInt(result[3], 16);
-      return {
-        r,
-        g,
-        b,
-        a: alpha,
-      };
+  const handleContentsChange = (event: any) => {
+    console.log('contents', event.target.value);
+    setValueContents(event.target.value);
+  };
+
+
+
+
+  function rgbaToHex(rgbaColor: { r: number; g: number; b: number; a: number }): string {
+    const { r, g, b, a } = rgbaColor;
+
+    // Chuyển đổi giá trị rgba thành các số nguyên từ 0 đến 255
+    const rInt = Math.round(r);
+    const gInt = Math.round(g);
+    const bInt = Math.round(b);
+
+    // Chuyển đổi alpha thành giá trị từ 0 đến 255
+    const aInt = Math.round(a * 255);
+
+    // Chuyển đổi giá trị thành chuỗi hex
+    const rHex = rInt.toString(16).padStart(2, '0');
+    const gHex = gInt.toString(16).padStart(2, '0');
+    const bHex = bInt.toString(16).padStart(2, '0');
+    const aHex = aInt.toString(16).padStart(2, '0');
+
+    // Kết hợp các giá trị hex để tạo chuỗi hex hoàn chỉnh
+    const hexColor = `#${rHex}${gHex}${bHex}${aHex}`;
+
+    return hexColor;
+  }
+
+  // const hexColor = rgbaToHex(rgbaColor);
+  // console.log('màu user tạo note', hexColor);
+  console.log('currentColor', currentColor);
+  console.log('color call api', color);
+
+
+  function hexToRgba(hex: string): { r: number; g: number; b: number; a: number } | null {
+    // Kiểm tra xem chuỗi HEX có đúng định dạng không
+    const hexRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})?$/i;
+    const result = hexRegex.exec(hex);
+
+    if (!result) {
+      return null; // Chuỗi không hợp lệ
     }
 
-    return null;
+    // Lấy giá trị từ chuỗi HEX và chuyển đổi thành số nguyên
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    const a = result[4] ? parseInt(result[4], 16) / 255 : 1;
+
+    return { r, g, b, a };
   }
 
   const handleColorClick = (clickedColor: string) => {
-    // console.log('color da chon', clickedColor)
+    console.log('user click color khác trong update', clickedColor)
     setCurrentColor(clickedColor);
-    const rgbaColor = hexToRgba(clickedColor);
-    if (rgbaColor) {
-      // console.log('color hex', rgbaColor)
-      setColor(rgbaColor);
+    const rgbaColor1 = hexToRgba(clickedColor);
+    if (rgbaColor1) {
+      console.log('color hex to rgba', rgbaColor1)
+      setColor(rgbaColor1);
     } else {
       console.error('Invalid HEX color:', clickedColor);
     }
@@ -130,47 +169,42 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
   };
 
   useEffect(() => {
+    setValueTitle(selectedNote.title);
+    setValueContents(selectedNote.data);
+  }, [selectedNote]);
+
+  useEffect(() => {
+    if (createAt) {
+      setIsNoteEdited(true);
+    }
+  }, [createAt]);
+
+  useEffect(() => {
     setupAutoResize(titleRef);
     setupAutoResize(contentRef);
   }, []);
 
-  const handleTitleChange = (event: any) => {
-    console.log('title', event.target.value)
-    setValueTitle(event.target.value);
-  };
-
-  const handleContentsChange = (event: any) => {
-    console.log('contents', event.target.value)
-    setValueContents(event.target.value);
-  };
-
-  const createNewNote = async () => {
+  const updateNote = async () => {
     try {
       const requestBody = {
         color,
         data: valueContents,
-        idFolder,
-        dueAt,
-        remindAt,
-        lock,
-        notePublic,
-        pinned,
-        share,
         title: valueTitle,
-        type,
+        type
       };
 
-      const response = await axios.post(`https://lhvn.online/notes/${userId}`, requestBody);
-      console.log('New note created:', response.data.note);
-      const { updateAt } = response.data.note //color, idFolder, dueAt, remindAt, lock, notePublic, pinned, share, type
-      setUpdateAt(updateAt)
+      const response = await axios.patch(`https://lhvn.online/notes/${idNote}`, requestBody);
+      console.log('Update note success:', response.data.note);
+      // dispatch(getAllNotes(response.data.note));
+      // const { updateAt } = response.data.note //color, idFolder, dueAt, remindAt, lock, notePublic, pinned, share, type
+      // setUpdateAt(updateAt)
     } catch (error) {
       console.error('Error creating new note:', error);
     }
   };
 
-  const handleClickBtn = async () => {
-    await createNewNote();
+  const handleClickUpdateNote = () => {
+    updateNote()
     router.push('/')
   };
 
@@ -201,7 +235,7 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
               </div>
               <div className=' xl:flex xl:justify-center
               justify-center hidden '>
-                <h2 className={`text-2xl font-semibold ${titleTextColor}`}>Create Note</h2>
+                <h2 className={`text-2xl font-semibold ${titleTextColor}`}>Update Note</h2>
               </div>
               <div className=' xl:flex xl:flex-col
               '>
@@ -220,6 +254,7 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
                     style={{ backgroundColor: currentColor }}
                     ref={titleRef}
                     placeholder='Title...'
+                    value={valueTitle}
                     onChange={handleTitleChange}
                   >
                   </textarea>
@@ -243,6 +278,7 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
                     ref={contentRef}
                     placeholder='Contents...'
                     onChange={handleContentsChange}
+                    value={valueContents}
                   >
                   </textarea>
                 </div>
@@ -273,9 +309,9 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
               <div className='hidden xl:block'><Toolbars titleTextColor={titleTextColor} /></div>
               <div>
                 <button
-                  onClick={handleClickBtn}
+                  onClick={handleClickUpdateNote}
                   className='xl:block xl:w-[114px] xl:h-[50px] xl:bg-[#FFFFFF] xl:text-[24px] xl:font-semibold xl:rounded-[30px]
-                hidden w-[114px] h-[50px] bg-[#FFFFFF] text-[24px] font-semibold rounded-[30px]'>Done</button>
+                hidden w-[114px] h-[50px] bg-[#FFFFFF] text-[24px] font-semibold rounded-[30px]'>Update</button>
               </div>
             </div>
           </div>
@@ -307,6 +343,6 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
       </div>
     </div>
   )
-}
+};
 
-export default NewNote
+export default UpdateNote;
