@@ -11,39 +11,40 @@ import { BsGrid } from "react-icons/bs";
 import { BsListUl } from "react-icons/bs";
 import { BsSortDown } from "react-icons/bs";
 import { BsSortAlphaDown } from "react-icons/bs";
-import { useSelector } from "react-redux";
 
 interface HeaderProps {
     user: any;
     num_notes: number;
-    // setDisplayState: any;
+    setDisplayState: any;
 }
 
-const Header: FC<HeaderProps> = ({ user, num_notes }) => {
+const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
     return (
         <div className="flex items-center justify-between md:gap-5 w-full">
             <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-3 px-2 py-1 bg-[#267BFA] rounded-[50px] w-max pr-[80px] shadow-md">
-                    <div>
-                        <img
-                            src={user?.AvtProfile}
-                            className="w-[40px] h-[40px] rounded-full"
-                            alt="avatar"
-                        />
-                    </div>
-                    <div className="flex flex-col text-white">
-                        <p
-                            suppressHydrationWarning
-                            className="text-[16px] md:text-[20px] lg:text-[26px] xl:text-[30px] font-medium"
-                        >
-                            {user?.name}
-                        </p>
+                <Link href="/user-profile">
+                    <div className="flex items-center gap-3 px-2 py-1 bg-[#267BFA] rounded-[50px] w-max pr-[80px] shadow-md">
+                        <div>
+                            <img
+                                src={user?.AvtProfile}
+                                className="w-[40px] h-[40px] rounded-full"
+                                alt="avatar"
+                            />
+                        </div>
+                        <div className="flex flex-col text-white">
+                            <p
+                                suppressHydrationWarning
+                                className="text-[16px] md:text-[20px] lg:text-[26px] xl:text-[30px] font-medium"
+                            >
+                                {user?.name}
+                            </p>
 
-                        <p className="text-[12px] md:text-[14px] lg:text-[20px] xl:text-[24px]">
-                            {num_notes} notes
-                        </p>
+                            <p className="text-[12px] md:text-[14px] lg:text-[20px] xl:text-[24px]">
+                                {num_notes} notes
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </Link>
                 <div className=" flex items-center justify-end gap-2">
                     <div className="p-3 bg-[#EFEFEF] w-max rounded-full md:hidden  shadow-md">
                         <FiSearch className="text-[26px]  " />
@@ -79,6 +80,9 @@ const Header: FC<HeaderProps> = ({ user, num_notes }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
+                                                onClick={() =>
+                                                    setDisplayState("grid")
+                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"
@@ -103,6 +107,9 @@ const Header: FC<HeaderProps> = ({ user, num_notes }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
+                                                onClick={() =>
+                                                    setDisplayState("list")
+                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"
@@ -128,6 +135,11 @@ const Header: FC<HeaderProps> = ({ user, num_notes }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
+                                                onClick={() =>
+                                                    setDisplayState(
+                                                        "sortbydate"
+                                                    )
+                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"
@@ -153,6 +165,11 @@ const Header: FC<HeaderProps> = ({ user, num_notes }) => {
                                     <Menu.Item>
                                         {({ active }) => (
                                             <button
+                                                onClick={() =>
+                                                    setDisplayState(
+                                                        "sortbyalpha"
+                                                    )
+                                                }
                                                 className={`${
                                                     active
                                                         ? "bg-[#267BFA] text-white"

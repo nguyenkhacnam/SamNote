@@ -23,8 +23,7 @@ export default function RootLayout({
             <body>
                 <Providers>
                     <StyledComponentsRegistry>
-                        {pathName === "/login" ||
-                        pathName === "/signup" ? (
+                        {pathName === "/login" || pathName === "/signup" ? (
                             children
                         ) : (
                             <Navigation>{children}</Navigation>
