@@ -23,7 +23,7 @@ const Signup = () => {
 
         try {
             const response = await axios.post(
-                "https://14.225.7.221:18011/register",
+                "https://lhvn.online/register",
                 values
             );
             console.log(response.data);

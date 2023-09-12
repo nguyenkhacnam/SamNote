@@ -12,7 +12,7 @@ const ColorItem: React.FC<ColorItemProps> = ({ color, onClick }) => {
 
   return (
     <div
-      className='w-8 h-8 rounded-full drop-shadow-3xl cursor-pointer'
+      className='w-6 h-6 xl:w-8 xl:h-8 rounded-full drop-shadow-3xl cursor-pointer'
       style={{ backgroundColor: color }}
       onClick={handleClick}
     ></div>
