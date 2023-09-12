@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { FaDotCircle } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import ShowMoreText from "react-show-more-text";
+import { PiBell } from "react-icons/pi";
 
 import {
     add,
@@ -60,7 +61,7 @@ export default function Schedule() {
     );
 
     return (
-        <div className="pt-5 pb-[120px] md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px] md:h-[calc(100vh-80px)] h-full">
+        <div className="pt-5 pb-[120px] md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px] h-full w-full">
             <div className="flex items-center gap-3 pb-5 md:pb-8 lg:pb-10 xl:pb-15">
                 <IoIosArrowBack
                     onClick={() => router.back()}
@@ -184,13 +185,13 @@ export default function Schedule() {
                                 {format(selectedDay, "MMM dd, yyy")}
                             </time>
                         </h2>
-                        <div className="mt-5 flex flex-col gap-3">
+                        <div className="mt-5 md:pb-[20px] flex flex-col gap-3">
                             {selectedDayNotes.length > 0 ? (
                                 selectedDayNotes.map((note: any) => (
                                     <Note note={note} key={note.idNote} />
                                 ))
                             ) : (
-                                <p className="text-[#FFAD32]">
+                                <p className="text-[#FFAD32] text-[16px] md:text-[20px] lg:text-[24px]">
                                     No notes for today.
                                 </p>
                             )}
@@ -203,21 +204,21 @@ export default function Schedule() {
 }
 
 function Note({ note }: any) {
-    console.log(note.data.length);
     return (
         <div className="pb-5 pt-3 px-5 bg-[#D9D9D9] rounded-[30px]">
-            <h2 className="text-black text-[16px] font-semibold">
-                {note.createAt}
-            </h2>
+            <div className="flex items-center justify-between">
+                <h2 className="text-black text-[16px] md:text-[20px] lg:text-[26px] font-semibold">
+                    {note.createAt}
+                </h2>
+                <PiBell className="text-[20px] md:text-[24px] lg:text-[26px]" />
+            </div>
             <ShowMoreText
-                /* Default options */
                 lines={3}
                 more="Show more"
                 less="Show less"
-                className="content-css"
+                className="content-css pt-3 md:text-[20px] lg:text-[24px]"
                 anchorClass="show-more-less-clickable"
                 expanded={false}
-                width={280}
                 truncatedEndingComponent={"... "}
             >
                 {note.data}
