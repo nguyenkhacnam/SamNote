@@ -14,6 +14,7 @@ import { getAllNotes } from "@/redux/feature/NotesSlice";
 import Link from 'next/link';
 import { IoChevronBackSharp, IoCloseOutline } from 'react-icons/io5';
 import ColorNote from '../ColorNote/ColorNote';
+import FontNote from '../FontNote/FontNote';
 
 interface UpdateNoteProps {
   idNote: number
@@ -27,7 +28,7 @@ interface UpdateNoteProps {
 
 const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   // Lấy danh sách các notes từ Redux store
-  const notes = useSelector((state: any) => state.notes.notes);
+  const notes: any = useSelector((state: any) => state.notes.notes);
   console.log('notes data', notes)
   const colors: string[] = ['#FEF5CB', '#E0FCDB', '#FFDDED', '#E1CAFA', '#D8ECFF', '#E8E8E8', '#696969']
 
@@ -61,6 +62,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
   const [currentColor, setCurrentColor] = useState(rgbaToHex(rgbaColor))
 
   const [hasChanged, setHasChanged] = useState(false);
+  const [isVisible, setIsVisible] = useState(true)
 
   const titleRef = useRef(null);
   const contentRef = useRef(null);
@@ -207,6 +209,11 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
     }
   };
 
+  const handleClickFontSize = () => {
+    console.log('da click')
+    setIsVisible(!isVisible);
+  }
+
   useEffect(() => {
     setValueTitle(selectedNote.title);
     setValueContents(selectedNote.data);
@@ -240,8 +247,8 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
 
   return (
     <div className=''>
-      <div className='bg-[#F7F7F7] w-full h-full
-      xl:bg-transparent'>
+      <div className='bg-[#F7F7F7] w-full h-screen flex flex-col justify-between -mt-[26px]
+      xl:bg-transparent xl:mt-0 xl:h-auto'>
         <div className=' flex justify-between items-center mt-[30px]
         xl:hidden'>
           <div
@@ -251,20 +258,21 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
           </div>
           <div className='flex-1 min-h-[30px]'><h2 className='text-[20px] text-center font-semibold self-center'>{valueTitle}</h2></div>
         </div>
-        <div className='  mx-[-23px]
+        <div className='mx-[-23px]
           xl:hidden
         '>
           <Toolbars
             titleTextColor={titleTextColor}
             idNote={idNote}
+            onClick={handleClickFontSize}
           />
         </div>
-        <div className='xl:flex xl:justify-center xl:mt-0 xl:pt-0
-        flex justify-center mt-[100px]'>
+        <div className='xl:flex xl:justify-center xl:mt-0 xl:pt-0 xl:flex-none
+        flex justify-center mt-[100px] flex-1'>
           <div className={` xl:flex xl:flex-col xl:justify-between xl:min-w-[1368px] xl:max-w-[1000px] xl:min-h-[587px] xl:rounded-[20px]
           flex flex-col justify-between relative min-w-full max-w-[640px] h-auto rounded-[20px] shadow-md bg-[${currentColor}]`} style={{ backgroundColor: currentColor }}>
             <div className='xl:pt-6 xl:px-[68px] xl:block
-             px-[22px]'>
+             px-[22px] h-full'>
               <div className=' xl:absolute xl:right-[68px] xl:w-[35px] xl:h-[35px] xl:bg-white xl:flex xl:justify-center xl:items-center xl:rounded-full
               w-[35px] h-[35px] bg-white justify-center items-center rounded-full hidden'>
                 <BsPin className=' xl:text-[28px] xl:cursor-pointer
@@ -278,7 +286,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
               '>
                 <label
                   htmlFor="inputTitleField"
-                  className={`text-2xl font-semibold cursor-pointer ${titleTextColor}`}
+                  className={`text-2xl font-semibold cursor-pointer hidden xl:flex ${titleTextColor}`}
                   onClick={() => handleLabelClick(inputTitleRef)}
                 >
                   Title
@@ -301,7 +309,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
               flex flex-col'>
                 <label
                   htmlFor="inputContentField"
-                  className={`text-2xl font-semibold cursor-pointer xl:flex ${titleTextColor}`}
+                  className={`text-2xl font-semibold cursor-pointer hidden xl:flex ${titleTextColor}`}
                   onClick={() => handleLabelClick(inputContentRef)}
                 >
                   Contents
@@ -353,31 +361,31 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
             </div>
           </div>
         </div>
-        <div className=' flex flex-col justify-center items-center w-full h-[145px] bg-[#D9D9D9] rounded-[30px] px-[20px] mt-[25px]
-            xl:hidden'>
-          <div className='self-end w-[12px] h-[12px] cursor-pointer'>
-            <IoCloseOutline />
+        {isVisible && (
+          <div className=' flex flex-col justify-start items-center w-full py-[10px] bg-[#D9D9D9] rounded-[30px] px-[20px] mt-[10px]
+          xl:hidden'>
+            <div className='self-end w-[12px] h-[12px] cursor-pointer'
+              onClick={handleClickFontSize}
+            >
+              <IoCloseOutline />
+            </div>
+            <div className='w-full flex flex-col gap-[7px]'>
+              <p>Color</p>
+              <ColorNote
+                setCurrentColor={setCurrentColor}
+                setColor={setColor}
+                setTitleTextColor={setTitleTextColor}
+                hexToRgba={hexToRgba}
+                setHasChanged={setHasChanged}
+              />
+            </div>
+            <div className='w-full flex flex-col gap-[7px]'>
+              <p>Font</p>
+              <FontNote 
+              />
+            </div>
           </div>
-          <div className='w-full flex flex-col gap-[7px]'>
-            <p>Color</p>
-            <ColorNote
-              setCurrentColor={setCurrentColor}
-              setColor={setColor}
-              setTitleTextColor={setTitleTextColor}
-              hexToRgba={hexToRgba}
-              setHasChanged={setHasChanged}
-            />
-          </div>
-          <div className='w-full flex flex-col gap-[7px]'>
-            <p>Font</p>
-            <ColorNote
-              setCurrentColor={setCurrentColor}
-              setColor={setColor}
-              setTitleTextColor={setTitleTextColor}
-              hexToRgba={hexToRgba}
-            />
-          </div>
-        </div>
+        )}
       </div>
     </div>
   )
