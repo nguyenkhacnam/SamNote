@@ -18,11 +18,12 @@ interface ToolbarsProps {
   titleTextColor: string,
   idNote: number,
   setActiveIcon: (iconName: string) => void
-  confirm: (e: React.MouseEvent<HTMLElement>) => void;
-  cancel: (e: React.MouseEvent<HTMLElement>) => void;
+  // confirm: (e: React.MouseEvent<HTMLElement>) => void;
+  // cancel: (e: React.MouseEvent<HTMLElement>) => void;
+  onClick: () => void;
 }
 
-const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote }) => {
+const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote, onClick }) => {
   const [activeIcon, setActiveIcon] = useState('');
 
   const router = useRouter()
@@ -49,22 +50,30 @@ const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote }) => {
     console.log('bo xoa')
   };
 
+  const handleToolbar = () => {
+    onClick()
+  }
+
   return (
     <div className='
-    grid items-center grid-cols-1 w-full text-[32px] absolute top-[85px] bg-[#FAE585] h-[73px]
+    grid items-center grid-cols-1 w-full text-[32px] absolute top-[60px] bg-[#FAE585] h-[73px]
     xl:flex xl:items-center xl:gap-[30px] xl:text-[32px] xl:sticky xl:bg-transparent xl:h-auto xl:w-auto
       '>
       <div className='flex justify-between px-[24px]
         xl:flex-none
       '>
-        <RiFontSize
-          className={`icon-note ${activeIcon === 'fontSize' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
-          onClick={() => setActiveIcon('fontSize')}
-        />
-        <GoPencil
-          className={`icon-note xl:hidden ${activeIcon === 'Pencil' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
-          onClick={() => setActiveIcon('Pencil')}
-        />
+        <div onClick={handleToolbar}>
+          <RiFontSize
+            className={`icon-note ${activeIcon === 'fontSize' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
+            onClick={() => setActiveIcon('fontSize')}
+          />
+        </div>
+        <div onClick={handleToolbar}>
+          <GoPencil
+            className={`icon-note xl:hidden ${activeIcon === 'Pencil' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
+            onClick={() => setActiveIcon('Pencil')}
+          />
+        </div>
         <BsListUl
           className={`icon-note hidden xl:block ${activeIcon === 'listUl' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
           onClick={() => setActiveIcon('listUl')}

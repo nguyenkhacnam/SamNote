@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { IoChevronBackSharp, IoCloseOutline } from 'react-icons/io5';
 import ColorNote from '../ColorNote/ColorNote';
 import FontNote from '../FontNote/FontNote';
+import ColorFontPanel from '../ColorFontPanel/ColorFontPanel';
 
 interface UpdateNoteProps {
   idNote: number
@@ -213,6 +214,9 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
     console.log('da click')
     setIsVisible(!isVisible);
   }
+  const handleVisible = () => {
+    
+  }
 
   useEffect(() => {
     setValueTitle(selectedNote.title);
@@ -361,31 +365,15 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote }) => {
             </div>
           </div>
         </div>
-        {isVisible && (
-          <div className=' flex flex-col justify-start items-center w-full py-[10px] bg-[#D9D9D9] rounded-[30px] px-[20px] mt-[10px]
-          xl:hidden'>
-            <div className='self-end w-[12px] h-[12px] cursor-pointer'
-              onClick={handleClickFontSize}
-            >
-              <IoCloseOutline />
-            </div>
-            <div className='w-full flex flex-col gap-[7px]'>
-              <p>Color</p>
-              <ColorNote
-                setCurrentColor={setCurrentColor}
-                setColor={setColor}
-                setTitleTextColor={setTitleTextColor}
-                hexToRgba={hexToRgba}
-                setHasChanged={setHasChanged}
-              />
-            </div>
-            <div className='w-full flex flex-col gap-[7px]'>
-              <p>Font</p>
-              <FontNote 
-              />
-            </div>
-          </div>
-        )}
+        <ColorFontPanel 
+          setCurrentColor={setCurrentColor}
+          setColor={setColor}
+          setTitleTextColor={setTitleTextColor}
+          hexToRgba={hexToRgba}
+          setHasChanged={setHasChanged}
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+        />
       </div>
     </div>
   )
