@@ -14,7 +14,6 @@ import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ColorNote from '../ColorNote/ColorNote'
-import FontNote from '../FontNote/FontNote';
 
 interface NewNoteProps {
   user: {
@@ -62,7 +61,6 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
   const [isNoteEdited, setIsNoteEdited] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
   const [outputList, setOutputList] = useState([]);
-  const [isVisible, setIsVisible] = useState(true)
 
   // console.log('datasaldkfj', valueTitle, color, idFolder, remindAt)
   const userData: NewNoteProps['user'] = useSelector((state: NewNoteProps) => state.user)
@@ -132,11 +130,6 @@ const NewNote: FC<NewNoteProps> = ({ }) => {
     ref.current?.focus();
   };
 
-  const handleClickFontSize = () => {
-    console.log('da click')
-    setIsVisible(!isVisible);
-  }
-  
   useEffect(() => {
     setupAutoResize(titleRef);
     setupAutoResize(contentRef);
