@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import Link from "next/link";
 import { BsMenuButtonWide } from "react-icons/bs";
@@ -11,23 +11,51 @@ import { BsGrid } from "react-icons/bs";
 import { BsListUl } from "react-icons/bs";
 import { BsSortDown } from "react-icons/bs";
 import { BsSortAlphaDown } from "react-icons/bs";
+import { useSearchParams } from "next/navigation";
 
 interface HeaderProps {
     user: any;
     num_notes: number;
     setDisplayState: any;
+    setDisplayNotes: any;
+
+    setIsSearch: any;
 }
 
-const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
+const Header: FC<HeaderProps> = ({
+    user,
+    num_notes,
+    setDisplayState,
+    setDisplayNotes,
+    setIsSearch,
+}) => {
+    const [query, setQuery] = useState("");
+
+    useEffect(() => {
+        const timeOutId = setTimeout(() => setIsSearch(query), 1000);
+
+        return () => clearTimeout(timeOutId);
+    }, [query]);
+
+    // console.log("value: ", value);
+
     return (
         <div className="flex items-center justify-between md:gap-5 w-full">
-            <div className="flex items-center justify-between w-full">
+            <div
+                className={`flex items-center  w-full ${
+                    user?.name && "justify-between"
+                }`}
+            >
                 <Link href="/user-profile">
-                    <div className="flex items-center gap-3 px-2 py-1 bg-[#267BFA] rounded-[50px] w-max pr-[80px] shadow-md">
+                    <div
+                        className={` items-center gap-3 md:gap-5 px-2 py-1 bg-[#267BFA] rounded-[50px] w-max pr-[80px] shadow-md ${
+                            user?.name ? "flex" : "hidden"
+                        }`}
+                    >
                         <div>
                             <img
                                 src={user?.AvtProfile}
-                                className="w-[40px] h-[40px] rounded-full"
+                                className="w-[40px] h-[40px] lg:w-[60px] lg:h-[60px] rounded-full"
                                 alt="avatar"
                             />
                         </div>
@@ -45,7 +73,7 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                         </div>
                     </div>
                 </Link>
-                <div className=" flex items-center justify-end gap-2">
+                <div className=" flex items-center justify-end gap-2 pl-5">
                     <div className="p-3 bg-[#EFEFEF] w-max rounded-full md:hidden  shadow-md">
                         <FiSearch className="text-[26px]  " />
                     </div>
@@ -54,6 +82,8 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                             <FiSearch className="text-[26px]  " />
                         </div>
                         <input
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
                             type="text"
                             placeholder="Search"
                             className="p-3 outline-none placeholder:text-[black] placeholder:text-[15px] "
@@ -136,7 +166,7 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                                         {({ active }) => (
                                             <button
                                                 onClick={() =>
-                                                    setDisplayState(
+                                                    setDisplayNotes(
                                                         "sortbydate"
                                                     )
                                                 }
@@ -166,7 +196,7 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
                                         {({ active }) => (
                                             <button
                                                 onClick={() =>
-                                                    setDisplayState(
+                                                    setDisplayNotes(
                                                         "sortbyalpha"
                                                     )
                                                 }
@@ -200,7 +230,9 @@ const Header: FC<HeaderProps> = ({ user, num_notes, setDisplayState }) => {
 
             <div className="flex items-center gap-2 md:gap-3 lg:gap-6 xl:gap-[42px]">
                 <div
-                    className={`${user ? "hidden" : "flex items-center gap-2"}`}
+                    className={`${
+                        user?.name ? "hidden" : "flex items-center gap-2"
+                    }`}
                 >
                     <Link href="/login">
                         <p className="md:py-[10px] px-[20px] py-[6px] md:px-[26px] lg:px-[46px] bg-[#D9D9D9] hover:bg-[#ece6e6] md:text-[16px] text-[13px] font-medium w-max rounded-[12px] shadow-md">
