@@ -58,7 +58,8 @@ const Navigation: FC<NavigationProps> = ({ children }) => {
             <div
                 className={`${
                     (pathName === "/add-note" ||
-                    pathName === `/notes/${params.id}` )&& "hidden md:block"
+                        pathName === `/notes/${params.id}`) &&
+                    "hidden md:block"
                 }`}
             >
                 <div className="md:flex md:items-center md:flex-col md:justify-between  md:sticky md:top-[38px] md:left-0 md:h-[calc(100vh-80px)] md:w-max md:bg-[#8AC3FC] rounded-[20px]">
