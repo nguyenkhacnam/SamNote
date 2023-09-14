@@ -1,4 +1,5 @@
 "use client"
+
 import React, { FC, useState } from 'react'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import { RiDeleteBinLine, RiFontSize } from 'react-icons/ri'
@@ -9,46 +10,40 @@ import { SlOptions } from 'react-icons/sl'
 import { GoPencil } from 'react-icons/go'
 import { HiOutlineMicrophone } from 'react-icons/hi2'
 import { CiLock } from 'react-icons/ci'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { Popconfirm, message } from 'antd'
-
+import { deleteNoteOnTrash } from '../../services/noteService';
 
 interface ToolbarsProps {
   titleTextColor: string,
-  idNote: any,
-  // setActiveIcon: (iconName: string) => void
-  // confirm: (e: React.MouseEvent<HTMLElement>) => void;
-  // cancel: (e: React.MouseEvent<HTMLElement>) => void;
+  idNote: number,
   onClick: () => void;
 }
 
 const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote, onClick }) => {
-  const [activeIcon, setActiveIcon] = useState('');
-
+  
   const router = useRouter()
 
-  const handleDelete = async () => {
-    const apiUrl = `https://lhvn.online/notes/${idNote}`;
-    try {
-      await axios.delete(apiUrl);
-    } catch (error) {
-      console.error('Xóa thất bại:', error);
-    }
-  }
+  const [activeIcon, setActiveIcon] = useState('');
 
   const confirm = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
     message.success('delete success');
     handleDelete();
     router.back()
   };
 
   const cancel = (e: React.MouseEvent<HTMLElement>) => {
-    console.log(e);
     // message.error('Click on No');
-    console.log('bo xoa')
   };
+
+  const handleDelete = async () => {
+    try {
+      const response = await deleteNoteOnTrash(idNote);
+      console.log('Data note delete:', response.note);
+    } catch (error) {
+      console.error('Xóa thất bại:', error);
+    }
+  }
 
   const handleToolbar = () => {
     onClick()
@@ -114,13 +109,6 @@ const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote, onClick }) => {
             className={`icon-note xl:hidden ${activeIcon === 'DeleteBinLine' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
             onClick={() => setActiveIcon('DeleteBinLine')}
           />
-          {/* {showConfirmation && (
-            <div>
-              <p className='text-[3px]'>Bạn có chắc chắn muốn xóa?</p>
-              <button onClick={confirmDelete}>Có</button>
-              <button onClick={cancelDelete}>Không</button>
-            </div>
-          )} */}
         </Popconfirm>
         <CiLock
           className={`icon-note xl:hidden ${activeIcon === 'Lock' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}

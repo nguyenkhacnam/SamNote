@@ -1,3 +1,4 @@
+
 textarea::-webkit-scrollbar {
   width: 5px;
   height: 20px;
@@ -10,14 +11,10 @@ textarea::-webkit-scrollbar-thumb {
 .title {
   @apply w-full resize-none outline-none xl:max-h-[90px] xl:min-h-[70px] xl:p-4 placeholder:font-semibold font-semibold
 }
-
 .content {
   @apply w-full resize-none outline-none flex-1 min-h-[240px] xl:mt-2 xl:min-h-[240px] xl:p-4 
-
 }
-
 .icon-note {
   @apply cursor-pointer w-[28px] h-[28px]
-
 }
 

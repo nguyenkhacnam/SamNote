@@ -1,9 +1,9 @@
 "use client";
-import NewNote from "@/components/NewNote/NewNote";
-import UpdateNote from "@/components/UpdateNote/UpdateNote";
-import axios from "axios";
+
 import { FC, useState } from "react";
 import { useSelector } from "react-redux";
+import { addNote } from '../../services/noteService';
+import CreateUpdateNote from "@/components/CreateUpdateNote/CreateUpdateNote";
 
 interface AddNoteProps {
   color: {
@@ -20,7 +20,8 @@ interface AddNoteProps {
 
 const AddNote: FC<AddNoteProps> = ({ }) => {
   const userData: any = useSelector((state: any) => state.user)
-  const userId: number | undefined = userData?.id
+  const userId: number = userData?.id
+
   const initialColor = {
     r: 254,
     g: 245,
@@ -29,19 +30,19 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
   }
   const createNote: string = 'Create Note'
   const btnCreateNote: string = 'Done'
-  const [currentColor, setCurrentColor] = useState('#FEF5CB')
+  const [currentColor, setCurrentColor] = useState<string>('#FEF5CB');
+  const [valueTitle, setValueTitle] = useState<string>('');
+  const [valueContents, setValueContents] = useState<string>('');
+  const [color, setColor] = useState<AddNoteProps['color']>(initialColor);
+  const [idFolder, setIdFolder] = useState<string | null>(null);
+  const [dueAt, setDueAt] = useState<Date | null>(null);
+  const [remindAt, setRemindAt] = useState<Date | null>(null);
+  const [lock, setLock] = useState<string | null>(null);
+  const [notePublic, setNotePublic] = useState<number>(0);
+  const [pinned, setPinned] = useState<boolean>(false);
+  const [share, setShare] = useState<string | null>(null);
+  const [type, setType] = useState<string>('text')
   // const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
-  const [valueTitle, setValueTitle] = useState<string>('')
-  const [valueContents, setValueContents] = useState('')
-  const [color, setColor] = useState<AddNoteProps['color']>(initialColor)
-  const [idFolder, setIdFolder] = useState(null)
-  const [dueAt, setDueAt] = useState(null)
-  const [remindAt, setRemindAt] = useState(null)
-  const [lock, setLock] = useState(null)
-  const [notePublic, setNotePublic] = useState(0)
-  const [pinned, setPinned] = useState(false)
-  const [share, setShare] = useState(null)
-  const [type, setType] = useState('text')
   // const [updateAt, setUpdateAt] = useState('')
   // const [isNoteEdited, setIsNoteEdited] = useState(false);
   // const [activeIcon, setActiveIcon] = useState(null);
@@ -49,15 +50,13 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
   // const [isVisible, setIsVisible] = useState(true)
 
   const handleChildValueChange = (title: string) => {
-    // console.log('day la du lieu chuan chi', title)
     setValueTitle(title);
   };
   const handleChildValueChange1 = (content: string) => {
-    // console.log('day la du lieu chuan chi content', content)
     setValueContents(content);
   };
 
-  const handleCorlor = (colored: any) => {
+  const handleColor = (colored: any) => {
     setColor(colored)
   }
 
@@ -80,33 +79,21 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
         type,
       };
 
-      const response = await axios.post(`https://lhvn.online/notes/${userId}`, requestBody);
-      console.log('New note created:', response.data.note);
-      const { updateAt } = response.data.note //color, idFolder, dueAt, remindAt, lock, notePublic, pinned, share, type
-      // setUpdateAt(updateAt)
+      const response = await addNote(userId, requestBody);
+      console.log('New note created:', response.note);
     } catch (error) {
       console.error('Error creating new note:', error);
     }
   };
   return (
     <div>
-      {/* <NewNote 
-        createNote={createNote} user={{
-          id: 0,
-          name: ""
-        }} color={{
-          r: 0,
-          g: 0,
-          b: 0,
-          a: 0
-        }}      /> */}
-      <UpdateNote 
+      <CreateUpdateNote 
         createNote={createNote}
         onChildValueChange={handleChildValueChange}
         onChildValueChange1={handleChildValueChange1}
         onClickBtn={handleClickBtn}
         btnCreateNote={btnCreateNote}
-        onCorlor={handleCorlor}
+        onColor={handleColor}
       />
     </div>
   );
