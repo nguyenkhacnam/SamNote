@@ -5,7 +5,7 @@ import axios from "axios";
 import { IoIosArrowBack } from "react-icons/io";
 import { AiOutlineUser } from "react-icons/ai";
 import { GoMail } from "react-icons/go";
-import { PiLockKeyLight } from "react-icons/pi";
+import { PiLockKeyLight, PiCaretLeftBold } from "react-icons/pi";
 import Image from "next/image";
 import logo from "../../assets/images/6306501 1.png";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,7 @@ import jwt_decode from "jwt-decode";
 import * as message from "../../components/Message/Message";
 import { useDispatch } from "react-redux";
 import { updateUser } from "@/redux/feature/UserSlice";
+import login from "../../assets/images/Group 43.png";
 
 export const validatePassword = (rule: any, value: any, callback: any) => {
     const regex =
@@ -85,7 +86,8 @@ const page = () => {
     };
 
     return (
-        <div className="flex items-center justify-center px-[15px] pt-[40px] w-full h-full ">
+        <>
+        <div className="flex items-center justify-center px-[15px] pt-[40px] w-full h-full sm:hidden">
             <div className="w-full">
                 <div>
                     <IoIosArrowBack />
@@ -174,6 +176,106 @@ const page = () => {
                 </div>
             </div>
         </div>
+
+        <div className="hidden sm:block pt-28 pb-28 xl:pl-40 xl:pr-40 h-[100vh]">
+            <div className="flex justify-center items-center bg-gray-300 h-[100%] rounded-[16px] md:p-16">
+                <div className="grid w-[50%] h-[100%]">
+                    <Link href="/" className="flex items-center h-[50%] text-2xl font-semibold">
+                        <PiCaretLeftBold className="ml-10 mr-8"/>   
+                        <p>SamNote</p>
+                    </Link>
+                    <Image
+                        src={login}
+                        alt="imgLogin"
+                        className=""
+                    />
+                </div>
+                <div className="w-[40%] h-[100%] grid items-center pl-24">
+                    <div className="h-[100%] grid content-evenly">
+                        <div className="">
+                            <GoogleOAuthProvider clientId="946264574600-45lpld1c2dibskshl55d79lauhtef8rk.apps.googleusercontent.com">
+                                <GoogleLogin
+                                    onSuccess={handleLoginWithSocial}
+                                    onError={() => {
+                                        console.log("Login Failed");
+                                    }}
+                                />
+                            </GoogleOAuthProvider>
+                        </div>
+                        <div className="">
+                            <GoogleOAuthProvider clientId="946264574600-45lpld1c2dibskshl55d79lauhtef8rk.apps.googleusercontent.com">
+                                <GoogleLogin
+                                    onSuccess={handleLoginWithSocial}
+                                    onError={() => {
+                                        console.log("Login Failed");
+                                    }}
+                                />
+                            </GoogleOAuthProvider>
+                        </div>
+                        <div className="text-center font-semibold">Or sign in with Email</div>
+                    </div>
+                    <div className="h-[100%]">
+                        <Form
+                        name="basic"
+                        wrapperCol={{
+                            span: 24,
+                        }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                        className="h-[100%] grid content-evenly" 
+                        >
+                            <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>User Name</label>
+                        <Form.Item
+                            name="user_name"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your username!",
+                                },
+                            ]}
+                        >
+                            <Input
+                                placeholder="Input user name"
+                                prefix={<AiOutlineUser />}
+                                className=""
+                                style={{ padding:'8px'}}
+                            />
+                        </Form.Item>
+                        <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>Password</label>
+                        <Form.Item
+                            name="password"
+                            rules={[
+                                {
+                                    validator: validatePassword,
+                                },
+                            ]}
+                        >
+                            <Input.Password
+                                placeholder="Input password"
+                                prefix={<PiLockKeyLight className="" />}
+                                className=""
+                                style={{ padding:'8px'}}
+                            />
+                        </Form.Item>
+                        <Checkbox onChange={onChange}>Remember me</Checkbox>
+                        <Form.Item wrapperCol={{ span: 24 }} className="mt-2">
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                className="w-full h-[55px] bg-[#267BFA] shadow-md rounded-[30px]"
+                            >
+                                Login
+                            </Button>
+                        </Form.Item>
+                    </Form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        </>
     );
 };
 
