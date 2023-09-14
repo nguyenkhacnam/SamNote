@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react';
 import ColorItem from '../ColorItem/ColorItem';
 
@@ -6,11 +8,12 @@ interface ColorNoteProps {
   setColor: any
   setTitleTextColor: any
   hexToRgba: any
+  setHasChanged: (hasChanged: boolean) => void;
 }
 
-const ColorNote: React.FC<ColorNoteProps> = ({setCurrentColor, setColor, setTitleTextColor, hexToRgba }) => {
+const ColorNote: React.FC<ColorNoteProps> = ({setCurrentColor, setColor, setTitleTextColor, hexToRgba, setHasChanged }) => {
 
-  const colors: string[] = ['#FEF5CB', '#E0FCDB', '#FFDDED', '#E1CAFA', '#D8ECFF', '#E8E8E8', '#696969']
+  const colors: string[] = ['#FF7D7DDE', '#FFBC7DDE', '#FAE28C', '#D3EF82', '#A5EF82', '#82EFBB', '#82C8EF']
 
   const handleColorClick = (clickedColor: string) => {
     // console.log('color da chon', clickedColor)
@@ -19,6 +22,7 @@ const ColorNote: React.FC<ColorNoteProps> = ({setCurrentColor, setColor, setTitl
     if (rgbaColor) {
       // console.log('color hex', rgbaColor)
       setColor(rgbaColor);
+      // setHasChanged(true)
     } else {
       console.error('Invalid HEX color:', clickedColor);
     }
