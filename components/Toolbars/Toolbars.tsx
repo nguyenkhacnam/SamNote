@@ -16,8 +16,8 @@ import { Popconfirm, message } from 'antd'
 
 interface ToolbarsProps {
   titleTextColor: string,
-  idNote: number,
-  setActiveIcon: (iconName: string) => void
+  idNote: any,
+  // setActiveIcon: (iconName: string) => void
   // confirm: (e: React.MouseEvent<HTMLElement>) => void;
   // cancel: (e: React.MouseEvent<HTMLElement>) => void;
   onClick: () => void;

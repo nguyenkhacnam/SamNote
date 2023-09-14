@@ -27,8 +27,9 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
     b: 203,
     a: 1,
   }
-  const createNote: string = 'Create Notesdfsadfsda'
-  // const [currentColor, setCurrentColor] = useState('#FEF5CB')
+  const createNote: string = 'Create Note'
+  const btnCreateNote: string = 'Done'
+  const [currentColor, setCurrentColor] = useState('#FEF5CB')
   // const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
   const [valueTitle, setValueTitle] = useState<string>('')
   const [valueContents, setValueContents] = useState('')
@@ -47,10 +48,22 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
   // const [outputList, setOutputList] = useState([]);
   // const [isVisible, setIsVisible] = useState(true)
 
-  const handleChildValueChange = (title: string, contents: string) => {
+  const handleChildValueChange = (title: string) => {
+    // console.log('day la du lieu chuan chi', title)
     setValueTitle(title);
-    setValueContents(contents)
   };
+  const handleChildValueChange1 = (content: string) => {
+    // console.log('day la du lieu chuan chi content', content)
+    setValueContents(content);
+  };
+
+  const handleCorlor = (colored: any) => {
+    setColor(colored)
+  }
+
+  const handleClickBtn = () => {
+    createNewNote()
+  }
   const createNewNote = async () => {
     try {
       const requestBody = {
@@ -90,6 +103,10 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
       <UpdateNote 
         createNote={createNote}
         onChildValueChange={handleChildValueChange}
+        onChildValueChange1={handleChildValueChange1}
+        onClickBtn={handleClickBtn}
+        btnCreateNote={btnCreateNote}
+        onCorlor={handleCorlor}
       />
     </div>
   );

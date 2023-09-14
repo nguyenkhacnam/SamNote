@@ -19,26 +19,45 @@ import ColorFontPanel from '../ColorFontPanel/ColorFontPanel';
 
 interface UpdateNoteProps {
   idNote: number
-  color: {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-  }
+  // color: {
+  //   r: number;
+  //   g: number;
+  //   b: number;
+  //   a: number;
+  // }
   createNote: string
+  titleUpdateNote: string
   onChildValueChange: (newValue: string) => void
+  onChildValueChange1: (newValue: string) => void
+  onClickBtn: () => void
+  selectedNote: any
+  onClickBtnUpdate: any
+  btnUpdateNote: string
+  btnCreateNote: string
+  onCorlor: any
+  onValueColor: any
+  colorCurrent: any
+  idNumber: any
 }
 
-const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChange }) => {
-  // Lấy danh sách các notes từ Redux store
-  // const notes: any = useSelector((state: any) => state.notes.notes);
-  // console.log('notes data', notes)
+const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChange, onChildValueChange1, onClickBtn, titleUpdateNote, selectedNote, onClickBtnUpdate, btnUpdateNote, btnCreateNote, onCorlor, onValueColor, colorCurrent, idNumber }) => {
   const colors: string[] = ['#FEF5CB', '#E0FCDB', '#FFDDED', '#E1CAFA', '#D8ECFF', '#E8E8E8', '#696969']
+  const initialColor = {
+    r: 254,
+    g: 245,
+    b: 203,
+    a: 1,
+  }
 
+  //  // Tìm note cụ thể bằng idNote
+  //  const idNumber = +idNote
+  //  const selectedNote = notes?.find((note: any) => note.idNote === idNumber);
   const router = useRouter()
   const [titleTextColor, setTitleTextColor] = useState('text-[#000000]');
   // const [rgbaColor, setRgbaColor] = useState(selectedNote.color);
   // const [color, setColor] = useState<UpdateNoteProps['color']>(selectedNote.color)
+  const [color, setColor] = useState<UpdateNoteProps['color']>(selectedNote?.color || initialColor)
+
   // const [idFolder, setIdFolder] = useState(selectedNote.idFolder)
   // const [dueAt, setDueAt] = useState(selectedNote.dueAt)
   // const [remindAt, setRemindAt] = useState(selectedNote.remindAt)
@@ -51,7 +70,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
   const [isNoteEdited, setIsNoteEdited] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
   // const [createAt, setCreateAt] = useState(selectedNote.createAt);
-  const [currentColor, setCurrentColor] = useState('#FEF5CB')
+  const [currentColor, setCurrentColor] = useState(colorCurrent ? rgbaToHex(colorCurrent) : '#FEF5CB')
 
   const [hasChanged, setHasChanged] = useState(false);
   const [isVisible, setIsVisible] = useState(true)
@@ -61,19 +80,21 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
   const inputTitleRef = useRef(null);
   const inputContentRef = useRef(null);
 
-  const [valueTitle, setValueTitle] = useState('')
-  const [valueContents, setValueContents] = useState('')
+  const [valueTitle, setValueTitle] = useState(selectedNote?.title ? selectedNote?.title : '')
+  const [valueContents, setValueContents] = useState(selectedNote?.data ? selectedNote?.data : '')
 
   const handleTitleChange = (event: any) => {
     console.log('title', event.target.value);
     setValueTitle(event.target.value);
+    onChildValueChange(event.target.value)
     console.log('setHasChanged', hasChanged)
     setHasChanged(true)
   };
 
   const handleContentsChange = (event: any) => {
     console.log('contents', event.target.value);
-    // setValueContents(event.target.value);
+    setValueContents(event.target.value);
+    onChildValueChange1(event.target.value)
     setHasChanged(true)
   };
 
@@ -128,7 +149,13 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
     const rgbaColor1 = hexToRgba(clickedColor);
     if (rgbaColor1) {
       console.log('color hex to rgba', rgbaColor1)
-      // setColor(rgbaColor1);
+      setColor(rgbaColor1);
+      if (onValueColor) {
+        onValueColor(rgbaColor1)
+      }
+      if (onCorlor) {
+        onCorlor(rgbaColor1)
+      }
     } else {
       console.error('Invalid HEX color:', clickedColor);
     }
@@ -162,33 +189,20 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
     ref.current?.focus();
   };
 
-  const updateNote = async () => {
-    // try {
-    //   const requestBody = {
-    //     color,
-    //     data: valueContents,
-    //     title: valueTitle,
-    //     type
-    //   };
-
-    //   const response = await axios.patch(`https://lhvn.online/notes/${idNote}`, requestBody);
-    //   console.log('Update note success:', response.data.note);
-    //   // dispatch(getAllNotes(response.data.note));
-    //   // const { updateAt } = response.data.note //color, idFolder, dueAt, remindAt, lock, notePublic, pinned, share, type
-    //   // setUpdateAt(updateAt)
-    // } catch (error) {
-    //   console.error('Error creating new note:', error);
-    // }
-  };
 
   const handleClickUpdateNote = () => {
-    updateNote()
+    btnCreateNote ? onClickBtn() : onClickBtnUpdate()
     router.back()
   };
 
   const handleBackClick = () => {
     if (hasChanged && window.confirm('Bạn có muốn lưu ghi chú trước khi rời khỏi trang?')) {
-      updateNote()
+      if (onClickBtn) {
+        onClickBtn()
+      }
+      if (onClickBtnUpdate) {
+        onClickBtnUpdate()
+      }
       router.back()
       console.log('back co du lieu')
     } else {
@@ -202,7 +216,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
     setIsVisible(!isVisible);
   }
   const handleVisible = () => {
-    
+
   }
 
   // useEffect(() => {
@@ -221,6 +235,21 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
     setupAutoResize(contentRef);
   }, []);
 
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasChanged) {
+        e.preventDefault();
+        e.returnValue = 'Bạn có muốn lưu ghi chú trước khi rời khỏi trang?';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [hasChanged]);
+
   return (
     <div className=''>
       <div className='bg-[#F7F7F7] w-full h-screen flex flex-col justify-between -mt-[26px]
@@ -232,14 +261,14 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
           >
             <IoChevronBackSharp className='w-6 h-6 self-center cursor-pointer' />
           </div>
-          <div className='flex-1 min-h-[30px]'><h2 className='text-[20px] text-center font-semibold self-center'>{}</h2></div>
+          <div className='flex-1 min-h-[30px]'><h2 className='text-[20px] text-center font-semibold self-center'>{ }</h2></div>
         </div>
         <div className='mx-[-23px]
           xl:hidden
         '>
           <Toolbars
             titleTextColor={titleTextColor}
-            idNote={idNote}
+            idNote={idNumber}
             onClick={handleClickFontSize}
           />
         </div>
@@ -256,7 +285,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
               </div>
               <div className=' xl:flex xl:justify-center
               justify-center hidden '>
-                <h2 className={`text-2xl font-semibold ${titleTextColor}`}>{createNote}</h2>
+                <h2 className={`text-2xl font-semibold ${titleTextColor}`}>{createNote || titleUpdateNote}</h2>
               </div>
               <div className=' xl:flex xl:flex-col
               '>
@@ -272,10 +301,10 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
                     id="inputTitleField"
                     className=' xl:title xl:text-xl
                     title text-lg'
-                    // style={{ backgroundColor: currentColor }}
+                    style={{ backgroundColor: currentColor }}
                     ref={titleRef}
                     placeholder='Title...'
-                    // value={valueTitle}
+                    value={valueTitle}
                     onChange={handleTitleChange}
                   >
                   </textarea>
@@ -295,11 +324,11 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
                     id='inputContentField'
                     className='xl:text-xl
                     content text-xs'
-                    // style={{ backgroundColor: currentColor }}
+                    style={{ backgroundColor: currentColor }}
                     ref={contentRef}
                     placeholder='Contents...'
                     onChange={handleContentsChange}
-                    // value={valueContents}
+                    value={valueContents}
                   >
                   </textarea>
                 </div>
@@ -327,19 +356,20 @@ const UpdateNote: FC<UpdateNoteProps> = ({ idNote, createNote, onChildValueChang
                   ))
                 }
               </div>
-              <div className='hidden xl:block'><Toolbars titleTextColor={titleTextColor} idNote={idNote} /></div>
+              <div className='hidden xl:block'><Toolbars titleTextColor={titleTextColor} idNote={idNumber}
+                onClick={handleClickFontSize} /></div>
               <div>
                 <button
                   onClick={handleClickUpdateNote}
                   className='xl:block xl:w-[114px] xl:h-[50px] xl:bg-[#FFFFFF] xl:text-[24px] xl:font-semibold xl:rounded-[30px]
-                hidden w-[114px] h-[50px] bg-[#FFFFFF] text-[24px] font-semibold rounded-[30px]'>Update</button>
+                hidden w-[114px] h-[50px] bg-[#FFFFFF] text-[24px] font-semibold rounded-[30px]'>{btnUpdateNote ? btnUpdateNote : btnCreateNote}</button>
               </div>
             </div>
           </div>
         </div>
-        <ColorFontPanel 
-          // setCurrentColor={setCurrentColor}
-          // setColor={setColor}
+        <ColorFontPanel
+          setCurrentColor={setCurrentColor}
+          setColor={setColor}
           setTitleTextColor={setTitleTextColor}
           hexToRgba={hexToRgba}
           setHasChanged={setHasChanged}
