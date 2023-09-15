@@ -14,11 +14,13 @@ import "../signup/acount.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import * as message from "../../components/Message/Message";
-import { validateEmail} from "../login/page";
+import { validateEmail, validatePassword} from "../login/page";
 import forgot from "../../assets/images/forgot.png";
 
 const Forgotpassword = () => {
     const router = useRouter();
+    const [isModalRs, setIsModalRs] = useState(false);
+
     const onFinish = async (values: any) => {
         console.log("Success:", values);
 
@@ -29,7 +31,8 @@ const Forgotpassword = () => {
             );
             console.log(response.data);
             message.success(response?.data?.message);
-            router.push("/login");
+            // router.push("/login");
+            setIsModalRs(true)
         } catch (error: any) {
             message.error(error?.response?.data?.message);
         }
@@ -38,6 +41,23 @@ const Forgotpassword = () => {
     const onFinishFailed = (errorInfo: any) => {
         console.log("Failed:", errorInfo);
     };
+
+
+    const ResetPw = async (values: any) => {
+        console.log("Success:", values);
+        try {
+            const response = await axios.patch(
+                "https://lhvn.online/resetPasswork/change",
+                values
+            );
+            console.log(response.data);
+            message.success(response?.data?.message);
+
+            router.push("/login");
+        } catch (error: any) {
+            message.error(error?.response?.data?.message);
+        }
+    }
 
 
     return (
@@ -127,16 +147,68 @@ const Forgotpassword = () => {
                             <div className="mb-4">
                                 <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>Email Address</label>
                             </div>
+                            <Form.Item
+                                name="gmail"
+                                rules={[
+                                    {
+                                        validator: validateEmail,
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="Input Email" prefix={<GoMail />} />
+                            </Form.Item>
+
+                            <Form.Item wrapperCol={{ span: 24 }} className="mt-2">
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    className="w-full h-[55px] bg-[#267BFA] shadow-md rounded-[30px]"
+                                >
+                                    Send Reset Instructions
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
+                    {isModalRs && (
+                    <div>
+                    <Form
+                        name="basic"
+                        wrapperCol={{
+                            span: 24,
+                        }}
+                        onFinish={ResetPw}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                        className="h-[100%] grid content-center" 
+                        >
+                            <div className="mb-4">
+                                <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>Verification</label>
+                            </div>
                     <Form.Item
-                        name="gmail"
+                        name="password"
+                        rules={[
+                        ]}
+                    >
+                        <Input placeholder="Input Verification" prefix={<GoMail />} />
+                    </Form.Item>
+                    <div className="mb-4">
+                                <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>New Password</label>
+                            </div>
+                            <Form.Item
+                        name="new_password"
                         rules={[
                             {
-                                validator: validateEmail,
+                                validator: validatePassword,
                             },
                         ]}
                     >
-                        <Input placeholder="Input Email" prefix={<GoMail />} />
+                        <Input.Password
+                            placeholder="Input new password"
+                            prefix={<PiLockKeyLight className="" />}
+                            className="bg-[#EBEBEB] p-2"
+                        />
                     </Form.Item>
+                    
 
                         <Form.Item wrapperCol={{ span: 24 }} className="mt-2">
                             <Button
@@ -144,12 +216,12 @@ const Forgotpassword = () => {
                                 htmlType="submit"
                                 className="w-full h-[55px] bg-[#267BFA] shadow-md rounded-[30px]"
                             >
-                                Send Reset Instructions
+                                Reset Password
                             </Button>
                         </Form.Item>
                     </Form>
                     </div>
-
+                    )}
                 </div>
             </div>
         </div>
