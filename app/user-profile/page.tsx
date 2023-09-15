@@ -2,19 +2,22 @@
 import Header from "@/components/Header";
 import axios from "axios";
 import { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import { useRouter } from "next/navigation";
 import * as message from "../../components/Message/Message";
 import { FiUser } from "react-icons/fi";
 import { GoSignOut, GoEye } from "react-icons/go";
 import { TbMessageLanguage, TbHelpSquareRounded } from "react-icons/tb";
-import { IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline, IoCloseCircle } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { resetUser } from "@/redux/feature/UserSlice";
 
 const Profile = ({}) => {
     const url = "https://lhvn.online/";
     const user = useSelector((state:any) => state.user)
+    const dispatch = useDispatch();
+
 
     const [activeTab, setActiveTab] = useState("");
     const [isDarkMode, setDarkMode] = useState(false);
@@ -104,6 +107,7 @@ const Profile = ({}) => {
             if (response.status === 200) {
                 console.log("Logout successful");
                 localStorage.removeItem("persist:root");
+                dispatch(resetUser());
                 message.success("Logout successful");
                 router.push("/login");
             } else {
@@ -269,14 +273,14 @@ const Profile = ({}) => {
                         
                     </div>
                     {activeTab !== "" && (
-                    <div className="col-span-2 xl:col-span-3 bg-gray-300 p-12 lg:ml-12 rounded-[30px] h-[80vh] mb-32 mt-4 sm:mb-0 sm:mt-0 sm:h-auto">
+                    <div className="col-span-2 xl:col-span-3 bg-gray-300 sm:p-10 md:p-0 xl:p-10 lg:ml-8 xl:ml-12 rounded-[30px] h-[80vh] mb-32 mt-4 sm:mb-0 sm:mt-0 sm:h-auto">
                         <div className="tab-content h-[100%]">
                             <div id="edit-profile" className={`container tab-pane ${activeTab === "edit-profile" ? "active h-[100%]" : "hidden"}`}>
                                 <div className="h-[100%] px-8">
                                     <form action="" className="grid h-[100%]">
                                         <div className="grid content-center">
                                             <label htmlFor="" className="pt-4 font-semibold text-[20px]">Name</label>
-                                            <input type="text" name="name" className="w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4" 
+                                            <input type="text" name="name" className="w-[90%] lg:w-[70%] xl:w-[60%]  h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4" 
                                                 value={name} 
                                                 onChange={(e) => setName(e.target.value)} 
                                             />
@@ -288,17 +292,17 @@ const Profile = ({}) => {
                                                 onChange={(e) => setGmail(e.target.value)} 
                                             />
                                         </div> */}
-                                        <div className="flex">
+                                        <div className="flex h-[60%] sm:h-[80%]">
                                             <div style={{width:'50%'}}>
                                                 <label htmlFor="" className="pt-4 font-semibold text-[20px]">Avarta</label>
                                                 <a type="button" onClick={() => setIsModalOpen(true)} style={{cursor:'pointer', display:'contents'}}>
-                                                    <img src={avarta} alt="ava" style={{width:'50%'}}/>
+                                                    <img src={avarta} alt="ava" className="w-[80%] h-[90px] sm:w-[70%] sm:h-[120px] md:w-[80%] md:h-[200px] lg:w-[70%] xl:w-[60%] object-cover"/>
                                                 </a>
                                             </div>
                                             <div style={{width:'50%'}}>
                                                 <label htmlFor="" className="pt-4 font-semibold text-[20px]">AvtProfile</label>
                                                 <a type="button" onClick={() => setIsModalOpen2(true)} style={{cursor:'pointer', display:'contents'}}>
-                                                    <img src={avtProfile} alt="ava" style={{width:'50%'}}/>
+                                                    <img src={avtProfile} alt="ava" className="w-[80%] h-[90px] sm:w-[70%] sm:h-[120px] md:w-[80%] md:h-[200px] lg:w-[70%] xl:w-[60%] object-cover" />
                                                 </a>
                                             </div>
                                         </div>
@@ -309,7 +313,7 @@ const Profile = ({}) => {
 
                                     <label htmlFor="" className="font-semibold text-[20px]">Background</label> */}
 
-                                        <div className="m-auto mr-0 font-semibold text-[20px]">
+                                        <div className="m-auto mr-0 font-semibold text-[20px] h-[100%]">
                                             <button className="bg-white p-4 mr-12">Cancel</button>
 
                                             <button type="button" className="bg-white p-4" onClick={updateUserData}>Save</button>                                          
@@ -317,24 +321,24 @@ const Profile = ({}) => {
                                     </form>
                                 </div>
                                 {isModalOpen && (
-                                    <div className="confirmation-modal fixed inset-0 flex items-end sm:items-center justify-center bg-gray-800 bg-opacity-75">
-                                        <div className="bg-white p-4 rounded-lg shadow-lg w-[100%] sm:w-[30%] h-[30%] grid justify-center justify-items-center items-center">
+                                    <div className="confirmation-modal fixed inset-0 flex items-center sm:items-center justify-center bg-gray-800 bg-opacity-75">
+                                        <div className="bg-white p-4 relative rounded-lg shadow-lg w-[100%] sm:w-[70%] md:w-[50%] lg:w-[40%] xl:w-[30%] h-[30%] grid justify-center justify-items-center items-center">
                                             <h3>Chọn avatar </h3>
                                             <input type="file" onChange={handleImageChange} />
-                                            {selectedImage && <img src={URL.createObjectURL(selectedImage)} alt="Selected" style={{width:'inherit'}}/>}
-                                            <button className="uploadimg" onClick={handleUploadImage}>Tải lên</button>
-                                            <button className="" onClick={() => setIsModalOpen(false)}>X</button>
+                                            {selectedImage && <img src={URL.createObjectURL(selectedImage)} alt="Selected" className="w-[50%] h-[120px] object-cover"/>}
+                                            <button className="bg-sky-600 rounded-md p-2 font-semibold" onClick={handleUploadImage}>Tải lên</button>
+                                            <button className="absolute top-3 right-3 text-2xl" onClick={() => setIsModalOpen(false)}><IoCloseCircle/></button>
                                         </div>
                                     </div>
                                 )}
                                 {isModalOpen2 && (
-                                    <div className="confirmation-modal fixed inset-0 flex items-end sm:items-center justify-center bg-gray-800 bg-opacity-75">
-                                        <div className="bg-white p-4 rounded-lg shadow-lg w-[100%] sm:w-[30%] h-[30%] grid justify-center justify-items-center items-center">
+                                    <div className="confirmation-modal fixed inset-0 flex items-center sm:items-center justify-center bg-gray-800 bg-opacity-75">
+                                        <div className="bg-white p-4 relative rounded-lg shadow-lg w-[100%] sm:w-[70%] md:w-[50%] lg:w-[40%] xl:w-[30%] h-[30%] grid justify-center justify-items-center items-center">
                                             <h3>Chọn avatar profile</h3>
                                             <input type="file" onChange={handleImageChange2} />
-                                            {selectedImage2 && <img src={URL.createObjectURL(selectedImage2)} alt="Selected" style={{width:'inherit'}}/>}
-                                            <button className="uploadimg" onClick={handleUploadImage2}>Tải lên</button>
-                                            <button className="" onClick={() => setIsModalOpen2(false)}>X</button>
+                                            {selectedImage2 && <img src={URL.createObjectURL(selectedImage2)} alt="Selected" className="w-[50%] h-[120px] object-cover"/>}
+                                            <button className="bg-sky-600 rounded-md p-2 font-semibold" onClick={handleUploadImage2}>Tải lên</button>
+                                            <button className="absolute top-3 right-3 text-2xl" onClick={() => setIsModalOpen2(false)}><IoCloseCircle/></button>
                                         </div>
                                     </div>
                                 )}
@@ -359,7 +363,7 @@ const Profile = ({}) => {
                                             <input
                                                 type="text"
                                                 name="gmail"
-                                                className="w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4"
+                                                className="w-[90%] lg:w-[70%] xl:w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4"
                                             />
                                         </div>
                                         <div className="grid items-center content-evenly">
@@ -372,7 +376,7 @@ const Profile = ({}) => {
                                             <input
                                                 type="password"
                                                 name="password"
-                                                className="w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4"
+                                                className="w-[90%] lg:w-[70%] xl:w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4"
                                             />
                                         </div>
 
@@ -386,11 +390,11 @@ const Profile = ({}) => {
                                             <input
                                                 type="password"
                                                 name="password"
-                                                className="w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4"
+                                                className="w-[90%] lg:w-[70%] xl:w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4"
                                             />
                                         </div>
 
-                                        <div className="m-auto mr-0 font-semibold text-[20px]">
+                                        <div className="m-auto mr-0 font-semibold text-[20px] h-[100%]">
                                             <button className="bg-white p-4 mr-12">
                                                 Cancel
                                             </button>
@@ -461,19 +465,19 @@ const Profile = ({}) => {
                             >
                                 <h3>Help & About</h3>
                             </div>
-                        <div id="deleteAccount" className={`container tab-pane ${activeTab === "deleteAccount" ? "active" : "hidden"}`}>
+                        <div id="deleteAccount" className={`container tab-pane ${activeTab === "deleteAccount" ? "active" : "hidden"}`} style={{height:'60%'}}>
                             <div className="h-[100%] px-8">
                                     <form action="" className="grid h-[100%]">
                                         <div className="grid content-center">
                                             <label htmlFor="" className="pt-4 font-semibold text-[20px]">User-name</label>
-                                            <input type="text" name="name" className="w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4" 
+                                            <input type="text" name="name" className="w-[90%] lg:w-[70%] xl:w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4" 
                                                 value={userName} 
                                                 
                                             />
                                         </div>
                                         <div className="grid content-center">
                                             <label htmlFor="" className="pt-4 font-semibold text-[20px]">PassWord</label>
-                                            <input type="password" name="password" className="w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4" 
+                                            <input type="password" name="password" className="w-[90%] lg:w-[70%] xl:w-[60%] h-[100%] m-[10px] text-[20px] outline-none rounded-xl pl-4" 
                                                 value={password} 
                                                 onChange={(e) => setPassword(e.target.value)} 
                                             />
@@ -482,8 +486,8 @@ const Profile = ({}) => {
 
                                         <label htmlFor="" className="font-semibold text-[20px]">Background</label> */}
 
-                                        <div className="m-auto mr-0 font-semibold text-[20px]">
-                                            <button className="bg-white p-4 mr-12">Cancel</button>
+                                        <div className=" m-auto mr-0 font-semibold text-[20px] h-[100%]">
+                                            <button className="bg-white p-4 mr-10">Cancel</button>
 
                                             <button type="button" className="bg-white p-4"  onClick={() => setShowDeleteConfirmation(true)}>Delete</button>                                          
                                         </div>

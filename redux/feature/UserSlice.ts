@@ -25,8 +25,7 @@ export const userSlide = createSlice({
         },
             
         resetUser: (state) => {
-          
-
+            return initialState;
 
         },
     },

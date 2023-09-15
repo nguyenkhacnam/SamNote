@@ -126,6 +126,8 @@ const page = () => {
                         />
                     </Form.Item>
 
+                    <div className="relative">
+                    <div className="pb-1">
                     <Form.Item
                         name="password"
                         rules={[
@@ -140,7 +142,14 @@ const page = () => {
                             className="bg-[#EBEBEB] p-2"
                         />
                     </Form.Item>
-                    <Checkbox onChange={onChange}>Remember me</Checkbox>
+                    </div>
+                    <Link href="/forgotpassword" className="absolute bottom-0 right-1">
+                        {" "}
+                        Forgot?
+                    </Link>
+                    </div>
+
+                    <Checkbox onChange={onChange} style={{marginBottom:'8px'}}>Remember me</Checkbox>
                     <Form.Item wrapperCol={{ span: 24 }} className="mt-2">
                         <Button
                             type="primary"
@@ -242,7 +251,10 @@ const page = () => {
                                 style={{ padding:'8px'}}
                             />
                         </Form.Item>
+                        <div className="flex justify-between items-center">
                         <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>Password</label>
+                        <a href="/forgotpassword" className="font-semibold text-black">Forgot?</a>
+                        </div>
                         <Form.Item
                             name="password"
                             rules={[
