@@ -13,8 +13,7 @@ import { IoSettingsOutline, IoCloseCircle } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { resetUser } from "@/redux/feature/UserSlice";
 import { Form, Input } from "antd";
-import { PiLockKeyLight, PiCaretLeftBold } from "react-icons/pi";
-import Item from "antd/es/list/Item";
+import { PiLockKeyLight } from "react-icons/pi";
 
 const Profile = ({}) => {
     const url = "https://lhvn.online/";

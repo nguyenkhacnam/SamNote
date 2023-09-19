@@ -235,6 +235,7 @@ const Forgotpassword = () => {
                         ]}
                     >
                         <Input placeholder="Input Verification" />
+
                     </Form.Item>
                     <div className="mb-4">
                                 <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>New Password</label>
