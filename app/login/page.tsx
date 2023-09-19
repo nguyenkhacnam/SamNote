@@ -280,9 +280,12 @@ const page = () => {
                                 Login
                             </Button>
                         </Form.Item>
+                            <div className="text-[14px]  text-opacity-60 text-center mt-2">
+                                Already have an account ? <Link href="/signup" className="font-semibold text-black">Sign up</Link>
+                            </div>
                     </Form>
                     </div>
-
+                
                 </div>
             </div>
         </div>

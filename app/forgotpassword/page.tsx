@@ -1,9 +1,8 @@
 "use client";
-import React, { useState, useRef } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button,  Form, Input } from "antd";
 import axios from "axios";
 import { IoIosArrowBack } from "react-icons/io";
-import { AiOutlineUser } from "react-icons/ai";
 import { GoMail } from "react-icons/go";
 import { PiLockKeyLight, PiCaretLeftBold } from "react-icons/pi";
 import Image from "next/image";
@@ -11,8 +10,6 @@ import logo from "../../assets/images/6306501 1.png";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import "../signup/acount.css";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
 import * as message from "../../components/Message/Message";
 import { validateEmail, validatePassword} from "../login/page";
 import forgot from "../../assets/images/forgot.png";
@@ -107,6 +104,54 @@ const Forgotpassword = () => {
                         </Button>
                     </Form.Item>
                 </Form>
+                {isModalRs && (
+                    <Form
+                    name="basic"
+                    wrapperCol={{
+                        span: 24,
+                    }}
+                    onFinish={ResetPw}
+                    onFinishFailed={onFinishFailed}
+                    autoComplete="off"
+                    className=""
+                >
+                    <div className="mb-4">
+                                <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>Verification</label>
+                            </div>
+                    <Form.Item
+                        name="password"
+                    >
+                        <Input placeholder="Input Verification"  />
+                    </Form.Item>
+                    <div className="mb-4">
+                                <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>New Password</label>
+                            </div>
+                            <Form.Item
+                        name="new_password"
+                        rules={[
+                            {
+                                validator: validatePassword,
+                            },
+                        ]}
+                    >
+                        <Input.Password
+                            placeholder="Input new password"
+                            prefix={<PiLockKeyLight className="" />}
+                            className="bg-[#EBEBEB] p-2"
+                        />
+                    </Form.Item>
+
+                    <Form.Item wrapperCol={{ span: 24 }} className="mt-2">
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            className="w-full h-[55px] bg-[#267BFA] shadow-md rounded-[30px] "
+                        >
+                            Reset Password
+                        </Button>
+                    </Form.Item>
+                </Form>
+                )}
                
 
 
@@ -189,7 +234,8 @@ const Forgotpassword = () => {
                         rules={[
                         ]}
                     >
-                        <Input placeholder="Input Verification" prefix={<GoMail />} />
+                        <Input placeholder="Input Verification" />
+
                     </Form.Item>
                     <div className="mb-4">
                                 <label htmlFor="" className="font-semibold" style={{fontSize:'18px'}}>New Password</label>
