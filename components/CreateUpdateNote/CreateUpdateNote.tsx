@@ -68,7 +68,7 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
   const [color, setColor] = useState(selectedNote?.color || initialColor)
   const [isNoteEdited, setIsNoteEdited] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
-  const [currentColor, setCurrentColor] = useState(colorCurrent ? rgbaToHex(colorCurrent) : '#FEF5CB')
+  const [currentColor, setCurrentColor] = useState(colorCurrent ? rgbaToHex(colorCurrent) : '#ff7d7d')
   const [hasChanged, setHasChanged] = useState(false);
   const [isVisible, setIsVisible] = useState(true)
   const [valueTitle, setValueTitle] = useState(selectedNote?.title ? selectedNote?.title : '')
@@ -252,6 +252,7 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
             titleTextColor={titleTextColor}
             idNote={idNumber}
             onClick={handleClickFontSize}
+            onClickToolbars={handleToolbars}
           />
         </div>
         <div className='xl:flex xl:justify-center xl:mt-0 xl:pt-0 xl:flex-none

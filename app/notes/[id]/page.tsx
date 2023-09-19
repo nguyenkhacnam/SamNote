@@ -36,7 +36,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ params }) => {
 
   const [valueTitle, setValueTitle] = useState<string>('')
   const [valueContents, setValueContents] = useState<string>('')
-  const [colorUpdate, setColorUpdate] = useState(selectedNote.color)
+  const [colorUpdate, setColorUpdate] = useState(selectedNote?.color)
 
   const handleChildValueChange = (title: string) => {
     setValueTitle(title);
