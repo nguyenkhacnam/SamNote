@@ -14,7 +14,15 @@ interface ColorFontPanelProps {
 
 }
 
-const ColorFontPanel: FC<ColorFontPanelProps> = ({ setCurrentColor, setColor, setTitleTextColor, hexToRgba, setHasChanged, isVisible, setIsVisible }) => {
+const ColorFontPanel: FC<ColorFontPanelProps> = ({
+  setCurrentColor,
+  setColor,
+  setTitleTextColor,
+  hexToRgba,
+  setHasChanged,
+  isVisible,
+  setIsVisible
+}) => {
   const handleClickClose = () => {
     setIsVisible(!isVisible);
   }

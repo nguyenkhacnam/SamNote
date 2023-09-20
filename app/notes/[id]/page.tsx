@@ -36,7 +36,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ params }) => {
 
   const [valueTitle, setValueTitle] = useState<string>('')
   const [valueContents, setValueContents] = useState<string>('')
-  const [colorUpdate, setColorUpdate] = useState(selectedNote.color)
+  const [colorUpdate, setColorUpdate] = useState(selectedNote?.color)
 
   const handleChildValueChange = (title: string) => {
     setValueTitle(title);
@@ -51,7 +51,7 @@ const UpdateNote: FC<UpdateNoteProps> = ({ params }) => {
 
   const updateNote = async () => {
     try {
-      const requestBody = {
+      const requestBody: SelectedNote = {
         color: colorUpdate ? colorUpdate : color,
         data: valueContents ? valueContents : data,
         title: valueTitle ? valueTitle : title,
@@ -79,8 +79,9 @@ const UpdateNote: FC<UpdateNoteProps> = ({ params }) => {
         onChildValueChange1={handleChildValueChange1}
         onValueColor={handleValueColor}
         colorCurrent={color}
-        idNumber={idNumber}
-      />
+        idNumber={idNumber} idNote={0} createNote={""} onClickBtn={function (): void {
+          throw new Error("Function not implemented.");
+        } } btnCreateNote={""} onColor={undefined}      />
     </div>
   );
 };

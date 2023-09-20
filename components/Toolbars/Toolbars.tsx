@@ -13,26 +13,28 @@ import { CiLock } from 'react-icons/ci'
 import { useRouter } from 'next/navigation'
 import { Popconfirm, message } from 'antd'
 import { deleteNoteOnTrash } from '../../services/noteService';
+import EditChecklist from '../EditCheckList/EditChecklist'
 
 interface ToolbarsProps {
   titleTextColor: string,
   idNote: number,
   onClick: () => void;
+  onClickToolbars: (iconName: string) => void;
 }
 
-const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote, onClick }) => {
+const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote, onClick, onClickToolbars}) => {
   
   const router = useRouter()
 
   const [activeIcon, setActiveIcon] = useState('');
 
-  const confirm = (e: React.MouseEvent<HTMLElement>) => {
+  const confirm = (e: any) => {
     message.success('delete success');
     handleDelete();
     router.back()
   };
 
-  const cancel = (e: React.MouseEvent<HTMLElement>) => {
+  const cancel = (e: any) => {
     // message.error('Click on No');
   };
 
@@ -45,38 +47,49 @@ const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote, onClick }) => {
     }
   }
 
-  const handleToolbar = () => {
+  const handleToolbar = (iconName: string) => {
     onClick()
+    onClickToolbars(iconName)
   }
+
+  const handleListUlClick = () => {
+    // setActiveIcon(iconName)
+  };
 
   return (
     <div className='
     grid items-center grid-cols-1 w-full text-[32px] absolute top-[60px] bg-[#FAE585] h-[73px]
     xl:flex xl:items-center xl:gap-[30px] xl:text-[32px] xl:sticky xl:bg-transparent xl:h-auto xl:w-auto
       '>
-      <div className='flex justify-between px-[24px]
+      <div className='flex justify-between xl:gap-[35px] px-[24px]
         xl:flex-none
       '>
-        <div onClick={handleToolbar}>
+        <div onClick={() => handleToolbar('fontSize')}>
           <RiFontSize
             className={`icon-note ${activeIcon === 'fontSize' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
             onClick={() => setActiveIcon('fontSize')}
           />
         </div>
-        <div onClick={handleToolbar}>
+        <div onClick={() => handleToolbar('Pencil')} className='xl:hidden'>
           <GoPencil
             className={`icon-note xl:hidden ${activeIcon === 'Pencil' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
             onClick={() => setActiveIcon('Pencil')}
           />
         </div>
-        <BsListUl
-          className={`icon-note hidden xl:block ${activeIcon === 'listUl' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
-          onClick={() => setActiveIcon('listUl')}
-        />
-        <PiImageSquare
-          className={`icon-note ${activeIcon === 'imageSquare' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
-          onClick={() => setActiveIcon('imageSquare')}
-        />
+        <div onClick={() => handleToolbar('listUl')}
+        className='hidden xl:flex'>
+          <BsListUl
+            className={`icon-note hidden xl:block ${activeIcon === 'listUl' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
+            onClick={() => setActiveIcon('listUl')}
+          />
+          {/* {activeIcon === 'listUl' && <EditChecklist />} */}
+        </div>
+        <div onClick={() => handleToolbar('imageSquare')}>
+          <PiImageSquare
+            className={`icon-note ${activeIcon === 'imageSquare' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
+            onClick={() => setActiveIcon('imageSquare')}
+          />
+        </div>
         <HiOutlineMicrophone
           className={`icon-note xl:hidden ${activeIcon === 'outlineMicrophone' ? 'text-[#267BFA]' : ''} ${titleTextColor}`}
           onClick={() => setActiveIcon('outlineMicrophone')}

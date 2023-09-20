@@ -29,7 +29,7 @@ export const addNote = async (idUser: number, data: NoteData) => {
   }
 };
 
-export const updateNote = async (idNote: number, data: NoteData) => {
+export const updateNote = async (idNote: number, data: any) => {
   try {
     const res = await axiosConfig.patch(`/notes/${idNote}`, data);
 
