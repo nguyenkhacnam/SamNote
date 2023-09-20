@@ -13,7 +13,7 @@ interface ColorNoteProps {
 
 const ColorNote: React.FC<ColorNoteProps> = ({setCurrentColor, setColor, setTitleTextColor, hexToRgba, setHasChanged }) => {
 
-  const colors: string[] = ['#FF7D7DDE', '#FFBC7DDE', '#FAE28C', '#D3EF82', '#A5EF82', '#82EFBB', '#82C8EF']
+  const colors: string[] = ['#ff7d7d', '#ffbc7d', '#FAE28C', '#D3EF82', '#A5EF82', '#82EFBB', '#82C8EF']
 
   const handleColorClick = (clickedColor: string) => {
     // console.log('color da chon', clickedColor)

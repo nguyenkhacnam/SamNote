@@ -33,7 +33,7 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
   const [currentColor, setCurrentColor] = useState<string>('#FEF5CB');
   const [valueTitle, setValueTitle] = useState<string>('');
   const [valueContents, setValueContents] = useState<string>('');
-  const [color, setColor] = useState<AddNoteProps>(initialColor);
+  const [color, setColor] = useState(initialColor);
   const [idFolder, setIdFolder] = useState<string | null>(null);
   const [dueAt, setDueAt] = useState<Date | null>(null);
   const [remindAt, setRemindAt] = useState<Date | null>(null);

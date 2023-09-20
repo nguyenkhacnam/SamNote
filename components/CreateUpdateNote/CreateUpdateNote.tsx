@@ -8,6 +8,7 @@ import ColorItem from '../ColorItem/ColorItem'
 import Toolbars from '../Toolbars/Toolbars'
 import ColorFontPanel from '../ColorFontPanel/ColorFontPanel';
 import './CreateUpdateNote.css'
+import EditChecklist from '../EditCheckList/EditChecklist';
 
 interface CreateUpdateNoteProps {
   idNote: number
@@ -48,7 +49,7 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
   colorCurrent,
   idNumber }) => {
 
-  const colors: string[] = ['#FEF5CB', '#E0FCDB', '#FFDDED', '#E1CAFA', '#D8ECFF', '#E8E8E8', '#696969']
+  const colors: string[] = ['#ff7d7d', '#ffbc7d', '#FAE28C', '#D3EF82', '#A5EF82', '#82EFBB', '#82C8EF']
   const initialColor = {
     r: 254,
     g: 245,
@@ -67,11 +68,14 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
   const [color, setColor] = useState(selectedNote?.color || initialColor)
   const [isNoteEdited, setIsNoteEdited] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
-  const [currentColor, setCurrentColor] = useState(colorCurrent ? rgbaToHex(colorCurrent) : '#FEF5CB')
+  const [currentColor, setCurrentColor] = useState(colorCurrent ? rgbaToHex(colorCurrent) : '#ff7d7d')
   const [hasChanged, setHasChanged] = useState(false);
   const [isVisible, setIsVisible] = useState(true)
   const [valueTitle, setValueTitle] = useState(selectedNote?.title ? selectedNote?.title : '')
   const [valueContents, setValueContents] = useState(selectedNote?.data ? selectedNote?.data : '')
+
+  const [showEditChecklist, setShowEditChecklist] = useState(false);
+  const [data, setData] = useState("");
 
   const handleTitleChange = (event: any) => {
     // console.log('title', event.target.value);
@@ -200,6 +204,14 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
     setIsVisible(!isVisible);
   }
 
+  const handleToolbars = (iconName: string) => {
+    if (iconName === 'listUl') {
+      setShowEditChecklist(true);
+    } else {
+      setShowEditChecklist(false);
+    }
+  }
+
   useEffect(() => {
     setupAutoResize(titleRef);
     setupAutoResize(contentRef);
@@ -240,6 +252,7 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
             titleTextColor={titleTextColor}
             idNote={idNumber}
             onClick={handleClickFontSize}
+            onClickToolbars={handleToolbars}
           />
         </div>
         <div className='xl:flex xl:justify-center xl:mt-0 xl:pt-0 xl:flex-none
@@ -289,19 +302,25 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
                 >
                   Contents
                 </label>
-                <div>
-                  <textarea name="textarea"
-                    id='inputContentField'
-                    className='xl:text-xl
+                {showEditChecklist ? (
+                  <EditChecklist
+                    updateData={(checklist: any) => setData(checklist)}
+                  />
+                ) : (
+                  <div>
+                    <textarea name="textarea"
+                      id='inputContentField'
+                      className='xl:text-xl
                     content text-xs'
-                    style={{ backgroundColor: currentColor }}
-                    ref={contentRef}
-                    placeholder='Contents...'
-                    onChange={handleContentsChange}
-                    value={valueContents}
-                  >
-                  </textarea>
-                </div>
+                      style={{ backgroundColor: currentColor }}
+                      ref={contentRef}
+                      placeholder='Contents...'
+                      onChange={handleContentsChange}
+                      value={valueContents}
+                    >
+                    </textarea>
+                  </div>
+                )}
                 {/* <div className={`self-end text-sm font-normal ${titleTextColor}`}>
                   {
                     isNoteEdited ? `Đã chỉnh sửa hôm ${updateAt}` : ''
@@ -326,8 +345,14 @@ const CreateUpdateNote: FC<CreateUpdateNoteProps> = ({
                   ))
                 }
               </div>
-              <div className='hidden xl:block'><Toolbars titleTextColor={titleTextColor} idNote={idNumber}
-                onClick={handleClickFontSize} /></div>
+              <div className='hidden xl:flex'>
+                <Toolbars
+                  titleTextColor={titleTextColor}
+                  idNote={idNumber}
+                  onClick={handleClickFontSize}
+                  onClickToolbars={handleToolbars}
+                />
+              </div>
               <div>
                 <button
                   onClick={handleClickUpdateNote}
