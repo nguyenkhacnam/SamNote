@@ -28,13 +28,13 @@ const Toolbars: FC<ToolbarsProps> = ({ titleTextColor, idNote, onClick, onClickT
 
   const [activeIcon, setActiveIcon] = useState('');
 
-  const confirm = (e: React.MouseEvent<HTMLElement>) => {
+  const confirm = (e: any) => {
     message.success('delete success');
     handleDelete();
     router.back()
   };
 
-  const cancel = (e: React.MouseEvent<HTMLElement>) => {
+  const cancel = (e: any) => {
     // message.error('Click on No');
   };
 

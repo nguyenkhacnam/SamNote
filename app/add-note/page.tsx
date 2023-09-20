@@ -6,16 +6,16 @@ import { addNote } from '../../services/noteService';
 import CreateUpdateNote from "@/components/CreateUpdateNote/CreateUpdateNote";
 
 interface AddNoteProps {
-  color: {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-  },
-  user: {
-    id: number;
-    name: string;
-  },
+  // color: {
+  //   r: number;
+  //   g: number;
+  //   b: number;
+  //   a: number;
+  // },
+  // user: {
+  //   id: number;
+  //   name: string;
+  // },
  }
 
 const AddNote: FC<AddNoteProps> = ({ }) => {
@@ -33,7 +33,7 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
   const [currentColor, setCurrentColor] = useState<string>('#FEF5CB');
   const [valueTitle, setValueTitle] = useState<string>('');
   const [valueContents, setValueContents] = useState<string>('');
-  const [color, setColor] = useState<AddNoteProps['color']>(initialColor);
+  const [color, setColor] = useState(initialColor);
   const [idFolder, setIdFolder] = useState<string | null>(null);
   const [dueAt, setDueAt] = useState<Date | null>(null);
   const [remindAt, setRemindAt] = useState<Date | null>(null);
@@ -93,8 +93,7 @@ const AddNote: FC<AddNoteProps> = ({ }) => {
         onChildValueChange1={handleChildValueChange1}
         onClickBtn={handleClickBtn}
         btnCreateNote={btnCreateNote}
-        onColor={handleColor}
-      />
+        onColor={handleColor} idNote={0} titleUpdateNote={""} selectedNote={undefined} onClickBtnUpdate={undefined} btnUpdateNote={""} onValueColor={undefined} colorCurrent={undefined} idNumber={undefined}      />
     </div>
   );
 };
