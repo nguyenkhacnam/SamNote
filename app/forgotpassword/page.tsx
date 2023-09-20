@@ -11,8 +11,40 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import "../signup/acount.css";
 import * as message from "../../components/Message/Message";
-import { validateEmail, validatePassword} from "../login/page";
 import forgot from "../../assets/images/forgot.png";
+
+const validatePassword = (rule: any, value: string, callback: (error?: string) => void) => {
+    const regex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+    if (!value) {
+        callback("Please input your password.");
+    } else if (!regex.test(value)) {
+        callback(
+            "Password must be 8-16 characters long and include at least one lowercase letter, one uppercase letter, one digit, and one special character."
+        );
+    } else {
+        callback(); // No error
+    }
+};
+
+const validateEmail = (rule: any, value: string, callback: (error?: string) => void) => {
+    if (!value) {
+        callback("Please input your email.");
+    } else {
+        const trimmedValue = value.trim(); // Remove leading and trailing spaces
+        if (trimmedValue === value) {
+            const emailRegex =
+                /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailRegex.test(trimmedValue)) {
+                callback("Email is not valid.");
+            } else {
+                callback();
+            }
+        } else {
+            callback("Email should not contain leading or trailing spaces.");
+        }
+    }
+};
 
 const Forgotpassword = () => {
     const router = useRouter();

@@ -19,7 +19,7 @@ interface NoteData {
   type: string;
 }
 
-export const addNote = async (idUser: number, data: NoteData) => {
+export const addNote = async (idUser: number, data: any) => {
   try {
     const res = await axiosConfig.post(`/notes/${idUser}`, data);
 
@@ -29,7 +29,7 @@ export const addNote = async (idUser: number, data: NoteData) => {
   }
 };
 
-export const updateNote = async (idNote: number, data: NoteData) => {
+export const updateNote = async (idNote: number, data: any) => {
   try {
     const res = await axiosConfig.patch(`/notes/${idNote}`, data);
 

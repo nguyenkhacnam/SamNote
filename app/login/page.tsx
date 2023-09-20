@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import { updateUser } from "@/redux/feature/UserSlice";
 import login from "../../assets/images/Group 43.png";
 
-export const validatePassword = (rule: any, value: any, callback: any) => {
+const validatePassword = (rule: any, value: string, callback: (error?: string) => void) => {
     const regex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
     if (!value) {
@@ -32,7 +32,7 @@ export const validatePassword = (rule: any, value: any, callback: any) => {
     }
 };
 
-export const validateEmail = (rule: any, value: any, callback: any) => {
+const validateEmail = (rule: any, value: string, callback: (error?: string) => void) => {
     if (!value) {
         callback("Please input your email.");
     } else {
@@ -51,7 +51,7 @@ export const validateEmail = (rule: any, value: any, callback: any) => {
     }
 };
 
-const page = () => {
+const Login = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const onFinish = async (values: any) => {
@@ -294,4 +294,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Login;

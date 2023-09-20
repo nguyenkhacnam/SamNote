@@ -53,7 +53,7 @@ const Navigation: FC<NavigationProps> = ({ children }) => {
 
     return (
         <div
-            className={`md:flex w-full h-full bg-[#F7F7F7] md:bg-white  md:px-[25px] md:py-[38px] px-[23px] py-[13px] `}
+            className={`md:flex w-full h-full bg-[#F7F7F7] md:bg-white  md:px-[25px] md:py-[38px] px-[23px] py-[13px] dark:bg-slate-800`}
         >
             <div
                 className={`${
@@ -81,7 +81,7 @@ const Navigation: FC<NavigationProps> = ({ children }) => {
                     </Link>
                 </div>
             </div>
-            <main className="w-full h-full">{children}</main>
+            <main className="w-full h-full dark:bg-slate-800">{children}</main>
         </div>
     );
 };

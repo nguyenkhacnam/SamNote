@@ -79,8 +79,9 @@ const UpdateNote: FC<UpdateNoteProps> = ({ params }) => {
         onChildValueChange1={handleChildValueChange1}
         onValueColor={handleValueColor}
         colorCurrent={color}
-        idNumber={idNumber}
-      />
+        idNumber={idNumber} idNote={0} createNote={""} onClickBtn={function (): void {
+          throw new Error("Function not implemented.");
+        } } btnCreateNote={""} onColor={undefined}      />
     </div>
   );
 };
