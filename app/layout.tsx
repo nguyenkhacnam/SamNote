@@ -1,4 +1,4 @@
-
+"use client"
 import { Providers } from "@/redux/provider";
 import "./globals.css";
 // import type { Metadata } from "next";
