@@ -69,7 +69,7 @@ export default function Home() {
             const notesAlpha = [...notes];
             setNotes(notesAlpha.sort((a, b) => a.title.localeCompare(b.title)));
         }
-    }, [displayNotes]);
+    }, [displayNotes, notes]);
 
     const timeout = (ms: any) => {
         return new Promise((resolve) => setTimeout(resolve, ms));
@@ -100,8 +100,8 @@ export default function Home() {
     }, [handlerSearchData]);
 
     // console.log(displayState, ": ", notes);
-    console.log("search input:", isSearch);
-    console.log("Data search notes: ", dataSearchNotes);
+    // console.log("search input:", isSearch);
+    // console.log("Data search notes: ", dataSearchNotes);
     return (
         <div className="h-full w-full md:px-[35px] md:py-[15px] lg:px-[95px] lg:py-[20px]">
             <Header
